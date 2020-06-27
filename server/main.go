@@ -18,6 +18,7 @@ var letters []models.Letter
 func getLetters(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	//ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
 	collection := helper.ConnectToDB()
@@ -56,6 +57,8 @@ func getLetters(w http.ResponseWriter, r *http.Request) {
 func postLetter(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	var letter models.Letter
 
@@ -77,7 +80,7 @@ func main() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/api/letters", getLetters).Methods("GET")
-	router.HandleFunc("/api/letters", postLetter).Methods("POST")
+	router.HandleFunc("/api/letters", postLetter).Methods("POST", "OPTIONS")
 
 	log.Fatal(http.ListenAndServe(":8000", router))
 }

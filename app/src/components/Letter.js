@@ -1,35 +1,50 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 const url = 'http://localhost:8000/api/letters';
 
 class Letter extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
-        body: "sdsd"
+    this.state = {
+      letter: {
+        title: 'React Letter',
+        body: 'sdksdlk',
+      },
     };
   }
-  postLetter() {
 
-    console.log()
+  postLetter() {
+    axios({
+      method: 'post',
+      url: url,
+      data: this.state.letter,
+    });
   }
 
   render() {
     return (
       <div className='c-letter'>
-        <p>{this.state.body}</p>
-        <h2>My Letter</h2>
+        <h2>{this.state.letter.title}</h2>
         <input type='text' onChange={this.updateBody.bind(this)} />
-        <button>send</button>
-
+        <button
+          onClick={() => {
+            this.postLetter();
+          }}>
+          send
+        </button>
       </div>
     );
   }
 
-  updateBody(e){
-    this.setState({
-     body: e.target.value
-    })
+  updateBody(e) {
+    let input = e.target.value;
+    this.setState((prevState) => ({
+      letter: {
+        ...prevState.letter,
+        body: input,
+      },
+    }));
   }
 }
 
