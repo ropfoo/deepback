@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"deepback/helper"
+	"deepback/models"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -9,29 +11,16 @@ import (
 
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type Letter struct {
-	ID    primitive.ObjectID `json:"_id" bson:"_id"`
-	Title string             `json:"title" bson:"title"`
-	Body  string             `json:"body" bson:"body"`
-}
-
-var letters []Letter
+var letters []models.Letter
 
 func getLetters(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	//ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI("mongodb://root:example@localhost:27018"))
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println("Connected to MongoDB!")
-	collection := client.Database("testletters").Collection("letters")
+
+	collection := helper.ConnectToDB()
 
 	cur, err := collection.Find(context.Background(), bson.M{})
 	if err != nil {
@@ -44,7 +33,7 @@ func getLetters(w http.ResponseWriter, r *http.Request) {
 	for cur.Next(context.Background()) {
 
 		// create a value into which the single document can be decoded
-		var letter Letter
+		var letter models.Letter
 
 		// & character returns the memory address of the following variable.
 		err := cur.Decode(&letter) // decode similar to deserialize process.
@@ -64,9 +53,9 @@ func getLetters(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
-	r := mux.NewRouter()
+	router := mux.NewRouter()
 
-	r.HandleFunc("/api/letters", getLetters).Methods("GET")
+	router.HandleFunc("/api/letters", getLetters).Methods("GET")
 
-	log.Fatal(http.ListenAndServe(":8000", r))
+	log.Fatal(http.ListenAndServe(":8000", router))
 }
