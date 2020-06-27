@@ -30,6 +30,8 @@ func getLetters(w http.ResponseWriter, r *http.Request) {
 	defer cur.Close(context.Background())
 	fmt.Println("lwl")
 
+	letters = nil
+
 	for cur.Next(context.Background()) {
 
 		// create a value into which the single document can be decoded
@@ -51,11 +53,31 @@ func getLetters(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(letters) // encode similar to serialize process.
 }
 
+func postLetter(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	var letter models.Letter
+
+	err := json.NewDecoder(r.Body).Decode(&letter)
+	if err != nil {
+		fmt.Println(err)
+	}
+	letters = append(letters, letter)
+
+	collection := helper.ConnectToDB()
+
+	result, err := collection.InsertOne(context.Background(), letter)
+
+	json.NewEncoder(w).Encode(result)
+}
+
 func main() {
 
 	router := mux.NewRouter()
 
 	router.HandleFunc("/api/letters", getLetters).Methods("GET")
+	router.HandleFunc("/api/letters", postLetter).Methods("POST")
 
 	log.Fatal(http.ListenAndServe(":8000", router))
 }
