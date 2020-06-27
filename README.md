@@ -1,2 +1,5 @@
-# Soon to be started
-> so much empty in here...
+# Deepback
+
+Minimalistic yet very deep feedback app.
+
+> small react app for sending feedback to given topics
