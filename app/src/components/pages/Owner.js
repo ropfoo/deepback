@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import Question from '../modules/Question';
 import axios from 'axios';
 
 const url = 'http://localhost:8000/api/letters';
@@ -29,6 +29,8 @@ class Owner extends Component {
     return (
       <div>
         <h1>Hello I am Owner</h1>
+        <Question />
+        <h3>All Letters:</h3>
         <div>
           {this.state.letters.map((letter) => (
             <div key={letter._id}>

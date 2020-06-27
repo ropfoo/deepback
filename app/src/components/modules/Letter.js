@@ -29,12 +29,14 @@ class Letter extends Component {
       <div className='c-letter'>
         <img src={smiley} />
         <input className='c-letter__name' placeholder='Your Name' />
-        <input
+        <textarea
           className='c-letter__title'
           placeholder='Title'
+          maxLength='50'
           onChange={this.updateTitle.bind(this)}
         />
         <textarea
+          className='c-letter__body'
           placeholder='Tell us what you think...'
           type='text'
           onChange={this.updateBody.bind(this)}

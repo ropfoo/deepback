@@ -27,11 +27,12 @@
 
   &__title {
     font-family: 'Montserrat', sans-serif;
-    font-size: 2.7rem;
+    font-size: 2.3rem;
     margin-top: 5rem;
   }
 
-  textarea {
-    margin-top: 3rem;
+  &__body {
+    min-height: 20rem;
+    margin-top: 2rem;
   }
 }
