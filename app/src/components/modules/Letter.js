@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import smiley from '../../assets/icons/smiley_default.svg';
+
 const url = 'http://localhost:8000/api/letters';
 
 class Letter extends Component {
@@ -25,8 +27,18 @@ class Letter extends Component {
   render() {
     return (
       <div className='c-letter'>
-        <h2>{this.state.letter.title}</h2>
-        <input type='text' onChange={this.updateBody.bind(this)} />
+        <img src={smiley} />
+        <input className='c-letter__name' placeholder='Your Name' />
+        <input
+          className='c-letter__title'
+          placeholder='Title'
+          onChange={this.updateTitle.bind(this)}
+        />
+        <textarea
+          placeholder='Tell us what you think...'
+          type='text'
+          onChange={this.updateBody.bind(this)}
+        />
         <button
           onClick={() => {
             this.postLetter();
@@ -35,6 +47,16 @@ class Letter extends Component {
         </button>
       </div>
     );
+  }
+
+  updateTitle(e) {
+    let input = e.target.value;
+    this.setState((prevState) => ({
+      letter: {
+        ...prevState.letter,
+        title: input,
+      },
+    }));
   }
 
   updateBody(e) {

@@ -1,0 +1,37 @@
+.c-letter {
+  background-color: $color-lightgrey;
+  border-radius: 4rem;
+  border: 0.5rem solid $color-default;
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 4rem;
+  padding: 5rem;
+
+  input {
+    background-color: $color-lightgrey;
+    border: none;
+  }
+
+  img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0.7rem 2.5rem;
+    transform: scale(0.7);
+  }
+
+  &__name {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+  }
+
+  &__title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.7rem;
+    margin-top: 5rem;
+  }
+
+  textarea {
+    margin-top: 3rem;
+  }
+}

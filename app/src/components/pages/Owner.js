@@ -8,7 +8,7 @@ class Owner extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      something: '',
+      letters: [],
     };
   }
 
@@ -16,11 +16,8 @@ class Owner extends Component {
     axios
       .get(url)
       .then((response) => {
-        console.log(response.data.title);
-        const some = response.data;
-        console.log(some);
         this.setState({
-          something: response.data[0],
+          letters: response.data,
         });
       })
       .catch((err) => {
@@ -32,9 +29,14 @@ class Owner extends Component {
     return (
       <div>
         <h1>Hello I am Owner</h1>
-        <div>{this.state.something.title}</div>
-        <div>{this.state.something.body}</div>
-        <div>{this.state.something._id}</div>
+        <div>
+          {this.state.letters.map((letter) => (
+            <div key={letter._id}>
+              <h3>{letter.title}</h3>
+              <p>{letter.body}</p>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
