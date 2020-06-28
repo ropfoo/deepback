@@ -27,8 +27,10 @@ class Letter extends Component {
   render() {
     return (
       <div className='c-letter'>
-        <img src={smiley} />
-        <input className='c-letter__name' placeholder='Your Name' />
+        <div className='c-letter__top'>
+          <input className='c-letter__name' placeholder='Your Name' />
+          <img src={smiley} />
+        </div>
         <textarea
           className='c-letter__title'
           placeholder='Title'

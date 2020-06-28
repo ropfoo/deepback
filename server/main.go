@@ -11,9 +11,23 @@ import (
 
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 var letters []models.Letter
+
+var users []models.User
+
+func getUser(userID primitive.ObjectID) models.User {
+	var user models.User
+	for _, u := range users {
+		if user.ID == userID {
+			user = u
+			break
+		}
+	}
+	return user
+}
 
 func getLetters(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
@@ -61,6 +75,8 @@ func postLetter(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	var letter models.Letter
+
+	//var answer models.Answer
 
 	err := json.NewDecoder(r.Body).Decode(&letter)
 	if err != nil {
