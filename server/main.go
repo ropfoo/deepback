@@ -11,17 +11,16 @@ import (
 
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 var letters []models.Letter
 
 var users []models.User
 
-func getUser(userID primitive.ObjectID) models.User {
+func getUser(userID string) models.User {
 	var user models.User
 	for _, u := range users {
-		if user.ID == userID {
+		if user.ID.String() == userID {
 			user = u
 			break
 		}
@@ -71,7 +70,7 @@ func getLetters(w http.ResponseWriter, r *http.Request) {
 func postLetter(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	var letter models.Letter
@@ -82,6 +81,7 @@ func postLetter(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err)
 	}
+	fmt.Println(letter)
 	letters = append(letters, letter)
 
 	collection := helper.ConnectToDB()
@@ -91,12 +91,47 @@ func postLetter(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(result)
 }
 
+func sendAnswer(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	var letter models.Letter
+
+	err := json.NewDecoder(r.Body).Decode(&letter)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	//var user models.User
+	//user = getUser(letter.UserID)
+
+	collection := helper.ConnectToDB()
+
+	// Create filter
+	//filter := bson.M{"_id": id}
+
+	Who := bson.M{"email": "peter@parker.de"}
+	PushToArray := bson.M{"$push": bson.M{"questions": bson.M{"timestamp": 1464045212, "ip": "195.0.0.200"}}}
+	//collection.Update(Who, PushToArray)
+
+	collection.UpdateOne(context.TODO(), Who, PushToArray)
+
+	// book.ID = id
+
+	// json.NewEncoder(w).Encode(book)
+
+}
+
 func main() {
 
 	router := mux.NewRouter()
 
 	router.HandleFunc("/api/letters", getLetters).Methods("GET")
-	router.HandleFunc("/api/letters", postLetter).Methods("POST", "OPTIONS")
+	router.HandleFunc("/api/letters", sendAnswer).Methods("POST", "OPTIONS")
+	//router.HandleFunc("/api/letters", sendAnswer).Methods("PUT")
 
 	log.Fatal(http.ListenAndServe(":8000", router))
+
 }

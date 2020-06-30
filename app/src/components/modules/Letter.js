@@ -10,6 +10,8 @@ class Letter extends Component {
     super(props);
     this.state = {
       letter: {
+        userID: '5ef895edfc7574223b79db78',
+        questionID: '5ef8980318bd26406eabf182',
         title: 'React Letter',
         body: 'sdksdlk',
       },
