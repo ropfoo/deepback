@@ -11,6 +11,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 var letters []models.Letter
@@ -44,27 +45,27 @@ func getLetters(w http.ResponseWriter, r *http.Request) {
 	defer cur.Close(context.Background())
 	fmt.Println("lwl")
 
-	letters = nil
+	users = nil
 
 	for cur.Next(context.Background()) {
 
 		// create a value into which the single document can be decoded
-		var letter models.Letter
+		var user models.User
 
 		// & character returns the memory address of the following variable.
-		err := cur.Decode(&letter) // decode similar to deserialize process.
+		err := cur.Decode(&user) // decode similar to deserialize process.
 		if err != nil {
 			log.Fatal(err)
 		}
 		fmt.Println(cur.Current)
 		// add item our array
-		letters = append(letters, letter)
+		users = append(users, user)
 	}
 
 	if err := cur.Err(); err != nil {
 		log.Fatal(err)
 	}
-	json.NewEncoder(w).Encode(letters) // encode similar to serialize process.
+	json.NewEncoder(w).Encode(users) // encode similar to serialize process.
 }
 
 func postLetter(w http.ResponseWriter, r *http.Request) {
@@ -109,14 +110,12 @@ func sendAnswer(w http.ResponseWriter, r *http.Request) {
 
 	collection := helper.ConnectToDB()
 
-	// Create filter
-	//filter := bson.M{"_id": id}
+	questionID, _ := primitive.ObjectIDFromHex(letter.QuestionID)
 
-	Who := bson.M{"email": "peter@parker.de"}
-	PushToArray := bson.M{"$push": bson.M{"questions": bson.M{"timestamp": 1464045212, "ip": "195.0.0.200"}}}
-	//collection.Update(Who, PushToArray)
+	array := bson.M{"questions": bson.M{"$elemMatch": bson.M{"_id": questionID}}}
+	pushToArray := bson.M{"$push": bson.M{"questions.$.answers": bson.M{"title": letter.Title, "body": letter.Body}}}
 
-	collection.UpdateOne(context.TODO(), Who, PushToArray)
+	collection.UpdateOne(context.TODO(), array, pushToArray)
 
 	// book.ID = id
 
