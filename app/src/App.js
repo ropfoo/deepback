@@ -8,15 +8,10 @@ class App extends Component {
   render() {
     return (
       <div className='App'>
-        <Link to='/questions'>owner </Link>
-        <Link to='/answer'>answer </Link>
+        <Link to='/questions'>all questions </Link>
         <Switch>
+          <Route exact path='/question/:questionID' component={Answer} />
           <Route path='/questions' component={Questions} />
-          <Route
-            path='/answer'
-            component={Answer}
-            question='How are you mate?'
-          />
         </Switch>
       </div>
     );

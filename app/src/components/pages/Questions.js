@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import Question from '../modules/Question';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import Answer from '../pages/Answer';
 
 const url = 'http://localhost:8000/api/letters';
 
-class Owner extends Component {
+class Questions extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,13 +22,7 @@ class Owner extends Component {
           users: response.data,
         });
       })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  toQuestion(id) {
-    console.log('to route :' + id);
+      .catch((err) => console.log(err));
   }
 
   render() {
@@ -37,15 +33,13 @@ class Owner extends Component {
             <div key={user._id}>
               {user.questions.map((question) => {
                 return (
-                  <div
-                    key={question._id}
-                    onClick={() => {
-                      this.toQuestion(question._id);
-                    }}>
-                    <h4>{question.title}</h4>
-                    <p>{question.body}</p>
-                    <b>{user.name}</b>
-                  </div>
+                  <Link to={`question/${question._id}`}>
+                    <div>
+                      <h4>{question.title}</h4>
+                      <p>{question.body}</p>
+                      <b>{user.name}</b>
+                    </div>
+                  </Link>
                 );
               })}
             </div>
@@ -55,4 +49,4 @@ class Owner extends Component {
     );
   }
 }
-export default Owner;
+export default Questions;
