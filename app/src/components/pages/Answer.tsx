@@ -1,7 +1,7 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Letter from '../modules/Letter';
 import axios from 'axios';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const Answer: React.FC = () => {
   const location = useLocation();
