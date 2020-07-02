@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import Question from '../modules/Question';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import Answer from '../pages/Answer';
 
 const url = 'http://localhost:8000/api/letters';
 
