@@ -92,6 +92,38 @@ func postLetter(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(result)
 }
 
+func getQuestion(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	var user models.User
+
+	var params = mux.Vars(r)
+	fmt.Println(params["id"])
+
+	id, _ := primitive.ObjectIDFromHex(params["id"])
+
+	collection := helper.ConnectToDB()
+
+	filter := bson.M{"questions": bson.M{"$elemMatch": bson.M{"_id": id}}}
+
+	err := collection.FindOne(context.TODO(), filter).Decode(&user)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	var question *models.Question
+
+	for _, q := range user.Questions {
+		if id == q.ID {
+			question = q
+		}
+	}
+
+	json.NewEncoder(w).Encode(question)
+
+}
+
 func sendAnswer(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -128,6 +160,7 @@ func main() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/api/letters", getLetters).Methods("GET")
+	router.HandleFunc("/api/question/{id}", getQuestion).Methods("GET")
 	router.HandleFunc("/api/letters", sendAnswer).Methods("POST", "OPTIONS")
 	//router.HandleFunc("/api/letters", sendAnswer).Methods("PUT")
 

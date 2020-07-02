@@ -25,7 +25,8 @@ class Answer extends Component {
   render() {
     return (
       <div>
-        <h1>{this.state.question}</h1>
+        <h1>{this.state.question.title}</h1>
+        <p>{this.state.question.body}</p>
         <Letter />
       </div>
     );

@@ -14,10 +14,10 @@ type Letter struct {
 // Question Model
 type Question struct {
 	ID      primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
-	Open    bool               `json:"open" bson:"open"`
-	Title   string             `json:"title" bson:"title"`
-	Body    string             `json:"body" bson:"body"`
-	Answers []*Answer          `json:"answers" bson:"answers"`
+	Open    bool               `json:"open" bson:"open,omitempty"`
+	Title   string             `json:"title" bson:"title,omitempty"`
+	Body    string             `json:"body" bson:"body,omitempty"`
+	Answers []*Answer          `json:"answers" bson:"answers,omitempty"`
 }
 
 // Answer Model

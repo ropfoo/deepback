@@ -33,7 +33,7 @@ class Questions extends Component {
             <div key={user._id}>
               {user.questions.map((question) => {
                 return (
-                  <Link to={`question/${question._id}`}>
+                  <Link key={question._id} to={`question/${question._id}`}>
                     <div>
                       <h4>{question.title}</h4>
                       <p>{question.body}</p>
