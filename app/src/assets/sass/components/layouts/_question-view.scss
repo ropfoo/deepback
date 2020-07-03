@@ -1,0 +1,44 @@
+$margin-side: auto;
+
+.c-question-prev {
+  background-color: $color-lightgrey;
+  border: 0.1rem solid $color-default;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  margin: 0 $margin-side 1.5rem $margin-side;
+  padding: 1.5rem;
+  transition: 0.3s;
+  width: 70vw;
+
+  &:hover {
+    border-color: $color-midgrey;
+    transform: scale(1.03);
+    transition: 0.3s;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.7rem;
+  }
+
+  p {
+    margin-bottom: 0.5rem;
+  }
+
+  i {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.c-question-scope {
+  height: 100vh;
+  margin: auto;
+  width: 80vh;
+  padding: 4rem 0;
+
+  h1 {
+    margin-bottom: 1.5rem;
+  }
+}

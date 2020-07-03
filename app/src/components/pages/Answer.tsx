@@ -19,8 +19,11 @@ const Answer: React.FC = () => {
 
   return (
     <div>
+      <div className='c-question-scope'>
+        <h1>{question.title}</h1>
+        <p>{question.body}</p>
+      </div>
       <h1>{question.title}</h1>
-      <p>{question.body}</p>
       <Letter />
     </div>
   );

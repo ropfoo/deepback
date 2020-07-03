@@ -5,6 +5,10 @@
   padding: 0;
 }
 
+body {
+  color: $color-darkgrey;
+}
+
 p {
   font-family: 'Work Sans', sans-serif;
 }
@@ -20,6 +24,12 @@ textarea {
   background-color: $color-lightgrey;
   border: none;
   font-family: 'Work Sans', sans-serif;
+  outline: none;
   resize: none;
   width: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: $color-darkgrey;
 }

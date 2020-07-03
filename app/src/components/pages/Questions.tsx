@@ -24,10 +24,10 @@ const Questions: React.FC = () => {
             {user.questions.map((question: any) => {
               return (
                 <Link key={question._id} to={`question/${question._id}`}>
-                  <div>
-                    <h4>{question.title}</h4>
+                  <div className='c-question-prev'>
+                    <h2>{question.title}</h2>
                     <p>{question.body}</p>
-                    <b>{user.name}</b>
+                    <i>{user.name}</i>
                   </div>
                 </Link>
               );

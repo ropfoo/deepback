@@ -3,7 +3,6 @@ $padding: 2rem 4rem;
   background-color: $color-lightgrey;
   border-radius: 4rem;
   border: 0.3rem solid $color-default;
-  //box-shadow: inset 0px 0px 0px 10px #f00;
   display: flex;
   flex-direction: column;
   margin: 1rem 4rem;
@@ -11,6 +10,7 @@ $padding: 2rem 4rem;
   input {
     background-color: rgba($color: #000000, $alpha: 0);
     border: none;
+    outline: none;
   }
 
   &__top {
