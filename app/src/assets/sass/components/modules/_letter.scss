@@ -1,4 +1,4 @@
-$padding: 2rem 4rem;
+$padding: 0 4rem 0.3rem 4rem;
 .c-letter {
   background-color: $color-lightgrey;
   border-radius: 4rem;
@@ -11,6 +11,7 @@ $padding: 2rem 4rem;
     background-color: rgba($color: #000000, $alpha: 0);
     border: none;
     outline: none;
+    padding-top: 3rem;
   }
 
   &__top {
@@ -19,7 +20,7 @@ $padding: 2rem 4rem;
   }
 
   img {
-    transform: scale(0.7);
+    transform: scale(0.6);
     transform-origin: top right;
   }
 
@@ -32,12 +33,12 @@ $padding: 2rem 4rem;
 
   &__title {
     font-family: 'Montserrat', sans-serif;
-    font-size: 2.3rem;
+    font-size: 2.1rem;
     padding: $padding;
   }
 
   &__body {
-    min-height: 20rem;
+    min-height: 30vh;
     padding: $padding;
   }
 }

@@ -3,11 +3,11 @@ $margin-side: auto;
 .c-question-prev {
   background-color: $color-lightgrey;
   border: 0.1rem solid $color-default;
-  border-radius: 1rem;
+  border-radius: 2rem;
   display: flex;
   flex-direction: column;
   margin: 0 $margin-side 1.5rem $margin-side;
-  padding: 1.5rem;
+  padding: 1.5rem 2rem;
   transition: 0.3s;
   width: 70vw;
 

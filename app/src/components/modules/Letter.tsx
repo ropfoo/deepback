@@ -31,32 +31,34 @@ const Letter: React.FC = () => {
   };
 
   return (
-    <div className='c-letter'>
-      <div className='c-letter__top'>
-        <input className='c-letter__name' placeholder='Your Name' />
-        <img src={smiley} />
+    <div>
+      <div className='c-letter'>
+        <div className='c-letter__top'>
+          <input className='c-letter__name' placeholder='Your Name' />
+          <img src={smiley} />
+        </div>
+        <textarea
+          className='c-letter__title'
+          placeholder='Title'
+          maxLength={50}
+          onChange={(e) =>
+            setLetter({
+              ...letter,
+              title: e.target.value,
+            })
+          }
+        />
+        <textarea
+          className='c-letter__body'
+          placeholder='Tell us what you think...'
+          onChange={(e) => {
+            setLetter({
+              ...letter,
+              body: e.target.value,
+            });
+          }}
+        />
       </div>
-      <textarea
-        className='c-letter__title'
-        placeholder='Title'
-        maxLength={50}
-        onChange={(e) =>
-          setLetter({
-            ...letter,
-            title: e.target.value,
-          })
-        }
-      />
-      <textarea
-        className='c-letter__body'
-        placeholder='Tell us what you think...'
-        onChange={(e) => {
-          setLetter({
-            ...letter,
-            body: e.target.value,
-          });
-        }}
-      />
       <button
         onClick={() => {
           postLetter();
