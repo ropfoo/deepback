@@ -22,9 +22,11 @@ const Answer: React.FC = () => {
       <div className='c-question-scope'>
         <h1>{question.title}</h1>
         <p>{question.body}</p>
-        <div className='c-btn__toAnswer'>answer</div>
+        <a href='#answer' className='c-btn__toAnswer'>
+          answer
+        </a>
       </div>
-      <div className='c-answer-scope'>
+      <div id='answer' className='c-answer-scope'>
         <h1>{question.title}</h1>
         <Letter />
       </div>
