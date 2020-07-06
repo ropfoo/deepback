@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Answer from './components/pages/Answer';
 import Questions from './components/pages/Questions';
-import Login from './components/pages/Login';
+import Login from './components/modules/Login';
 import { Link, Route, Switch } from 'react-router-dom';
 import './assets/sass/main.scss';
 
@@ -16,7 +16,6 @@ const App: React.FC = () => {
         </Link>
       </div>
       <Switch>
-        <Route exact path='/login' component={Login} />
         <Route path='/questions' component={Questions} />
         <Route exact path='/question/:questionID' component={Answer} />
       </Switch>

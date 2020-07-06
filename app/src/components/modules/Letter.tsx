@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { letterValidation } from '../../assets/typescript/validation';
 
 import smiley from '../../assets/icons/smiley_default.svg';
 import { useLocation } from 'react-router-dom';
@@ -11,8 +12,8 @@ const Letter: React.FC = () => {
   const [answered, setAnswered] = useState(false);
   const [letter, setLetter] = useState({
     questionID: '',
-    title: 'React Letter',
-    body: 'sdksdlk',
+    title: '',
+    body: '',
   });
 
   useEffect(() => {
@@ -76,8 +77,10 @@ const Letter: React.FC = () => {
       {answered ? showResult() : showLetter()}
       <button
         onClick={() => {
-          postLetter();
-          setAnswered(true);
+          if (letterValidation(letter.title, letter.body)) {
+            // postLetter();
+            setAnswered(true);
+          }
         }}>
         send
       </button>
