@@ -2,6 +2,16 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
+interface User {
+  _id: string;
+  name: string;
+  questions: [];
+}
+
+interface Response {
+  data: [];
+}
+
 const url = 'http://localhost:8000/api/letters';
 
 const Questions: React.FC = () => {
@@ -10,7 +20,7 @@ const Questions: React.FC = () => {
   useEffect(() => {
     axios
       .get(url)
-      .then((response: any) => {
+      .then((response: Response) => {
         setUsers(response.data);
       })
       .catch((err) => console.log(err));
@@ -18,7 +28,7 @@ const Questions: React.FC = () => {
 
   return (
     <div>
-      {users.map((user: any) => {
+      {users.map((user: User) => {
         return (
           <div key={user._id}>
             {user.questions.map((question: any) => {

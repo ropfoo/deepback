@@ -1,14 +1,8 @@
 import React, { useState, useContext } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { AuthContext } from '../../App';
 import * as firebase from 'firebase';
 
-// import { logIn } from '../../store/user';
-
 const Login: React.FC = () => {
-  // const login = useSelector((state) => state.loggedIn);
-  // const dispatch = useDispatch();
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
