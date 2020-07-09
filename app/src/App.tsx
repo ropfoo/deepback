@@ -29,8 +29,18 @@ const App = () => {
           <Link to='/questions'>
             <img className='c-logo' src={logo} alt='' />
           </Link>
-          logged in: {JSON.stringify(user.isLoggedIn)}
-          <h3>{user.name}</h3>
+          <div>
+            {user.isLoggedIn ? (
+              <div>
+                <h3>{user.name}</h3>
+                <p>logout</p>
+              </div>
+            ) : (
+              <Link to='/login'>
+                <p>login</p>
+              </Link>
+            )}
+          </div>
         </div>
         <Switch>
           <Route exact path='/login' component={Login} />
