@@ -7,10 +7,16 @@ import { useLocation } from 'react-router-dom';
 
 const url = 'http://localhost:8000/api/letters';
 
+interface Letter {
+  questionID: string;
+  title: string;
+  body: string;
+}
+
 const Letter: React.FC = () => {
   const location = useLocation();
   const [answered, setAnswered] = useState(false);
-  const [letter, setLetter] = useState({
+  const [letter, setLetter] = useState<Letter>({
     questionID: '',
     title: '',
     body: '',
