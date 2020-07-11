@@ -1,4 +1,4 @@
-import React, { useState, createContext, useContext } from 'react';
+import React, { useState, createContext, useContext, useEffect } from 'react';
 import Answer from './components/pages/Answer';
 import Questions from './components/pages/Questions';
 import Login from './components/pages/Login';
@@ -22,6 +22,24 @@ const App = () => {
     name: '',
   });
 
+  function readSession() {
+    const userStored = window.sessionStorage.getItem(
+      `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
+    );
+    if (userStored) {
+      const u = JSON.parse(userStored);
+      setUser({
+        uid: u.uid,
+        name: u.displayName,
+        isLoggedIn: true,
+      });
+    }
+  }
+
+  useEffect(() => {
+    readSession();
+  }, []);
+
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       <div className='App'>
@@ -31,10 +49,9 @@ const App = () => {
           </Link>
           <div>
             {user.isLoggedIn ? (
-              <div>
+              <Link to='/login'>
                 <h3>{user.name}</h3>
-                <p>logout</p>
-              </div>
+              </Link>
             ) : (
               <Link to='/login'>
                 <p>login</p>
@@ -44,8 +61,12 @@ const App = () => {
         </div>
         <Switch>
           <Route exact path='/login' component={Login} />
-          <ProtectedRoute user={user} path='/questions' component={Questions} />
-          <Route exact path='/question/:questionID' component={Answer} />
+          <Route path='/questions' component={Questions} />
+          <ProtectedRoute
+            exact
+            path='/question/:questionID'
+            component={Answer}
+          />
         </Switch>
       </div>
     </AuthContext.Provider>

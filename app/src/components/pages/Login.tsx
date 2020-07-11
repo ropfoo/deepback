@@ -1,11 +1,14 @@
 import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../hooks/AuthContext';
 import * as firebase from 'firebase';
 
 import googleLogo from '../../assets/icons/login/google.png';
 
-const Login = () => {
+const Login: React.FC = () => {
   const Auth: any = useContext(AuthContext);
+
+  const history = useHistory();
 
   const loginWithGoogle = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -22,18 +25,28 @@ const Login = () => {
               uid: result.user?.uid,
               name: result.user?.displayName,
             });
+            history.push('/questions');
           })
           .catch((e) => console.log(e.message));
       });
   };
 
   return (
-    <div className='c-login'>
-      <h1>Login</h1>
-      <div className='c-login__item' onClick={() => loginWithGoogle()}>
-        <img src={googleLogo} />
-        <p>login with google</p>
-      </div>
+    <div>
+      {Auth.user.isLoggedIn ? (
+        <div className='c-login'>
+          <p>you are loggged in</p>
+          <button>logout</button>
+        </div>
+      ) : (
+        <div className='c-login'>
+          <h1>Login</h1>
+          <div className='c-btn__login' onClick={() => loginWithGoogle()}>
+            <img src={googleLogo} />
+            <p>login with google</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
