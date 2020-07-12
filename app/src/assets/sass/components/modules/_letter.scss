@@ -20,7 +20,7 @@ $padding: 0 4rem 0.3rem 4rem;
   }
 
   img {
-    transform: scale(0.6);
+    transform: scale(1.3);
     transform-origin: top right;
     cursor: pointer;
   }
@@ -45,11 +45,14 @@ $padding: 0 4rem 0.3rem 4rem;
 
   &__moods {
     display: flex;
+    width: auto;
+    justify-content: space-between;
     position: absolute;
     right: 30%;
     top: 30%;
     img {
-      width: 5rem;
+      width: 2.5rem;
+      margin-left: 2rem;
     }
   }
 }
@@ -67,8 +70,8 @@ $padding: 0 4rem 0.3rem 4rem;
   @include mood($color-positive);
 }
 .sad {
-  @include mood(blue);
-}
-.angry {
   @include mood($color-negative);
+}
+.neutral {
+  @include mood($color-neutral);
 }

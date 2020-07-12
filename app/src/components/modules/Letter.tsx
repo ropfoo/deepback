@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { letterValidation } from '../../assets/typescript/validation';
 
-import smiley from '../../assets/icons/smiley_default.svg';
-import happy from '../../assets/icons/smiley_happy.svg';
-
 import { useLocation } from 'react-router-dom';
 
 const url = 'http://localhost:8000/api/letters';
@@ -25,8 +22,8 @@ const Letter: React.FC = () => {
   });
 
   const [moodMenu, setMoodMenu] = useState(false);
-  const [mood, setMood] = useState('');
-  const moods = ['happy', 'sad', 'angry', 'default'];
+  const [mood, setMood] = useState('default');
+  const moods = ['happy', 'neutral', 'sad', 'default'];
 
   useEffect(() => {
     const path: string = location.pathname.split('/')[2];
@@ -58,12 +55,19 @@ const Letter: React.FC = () => {
             <div className='c-letter__moods'>
               {moods.map((m) => {
                 return (
-                  <img key={m} src={happy} onClick={() => changeMood(m)} />
+                  <img
+                    key={m}
+                    src={require(`../../assets/icons/smiley_${m}.svg`)}
+                    onClick={() => changeMood(m)}
+                  />
                 );
               })}
             </div>
           ) : null}
-          <img onClick={() => setMoodMenu(!moodMenu)} src={smiley} />
+          <img
+            onClick={() => setMoodMenu(!moodMenu)}
+            src={require(`../../assets/icons/smiley_${mood}.svg`)}
+          />
         </div>
         <textarea
           className='c-letter__title'
