@@ -1,0 +1,19 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="1000" height="1000" viewBox="0 0 1000 1000">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #eaeaea;
+      }
+
+      .cls-2 {
+        fill: #383838;
+      }
+    </style>
+  </defs>
+  <title>close-button</title>
+  <circle class="cls-1" cx="500" cy="500" r="500"/>
+  <g>
+    <rect class="cls-2" x="451.38" y="86.66" width="97.24" height="826.67" rx="48.62" ry="48.62" transform="translate(500 -207.11) rotate(45)"/>
+    <rect class="cls-2" x="451.38" y="86.66" width="97.24" height="826.67" rx="48.62" ry="48.62" transform="translate(-207.11 500) rotate(-45)"/>
+  </g>
+</svg>

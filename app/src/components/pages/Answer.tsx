@@ -4,6 +4,8 @@ import Letter from '../modules/Letter';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 
+import closeIcon from '../../assets/icons/close-button.svg';
+
 const Answer: React.FC = () => {
   const location = useLocation();
   const [question, setQuestion] = useState({ title: '', body: '' });
@@ -26,7 +28,7 @@ const Answer: React.FC = () => {
           <h1>{question.title}</h1>
           <p>{question.body}</p>
         </div>
-        <div onClick={() => setLetterView(true)} className='c-btn__toAnswer'>
+        <div onClick={() => setLetterView(true)} className='c-btn__submit'>
           <p>answer</p>
         </div>
       </div>
@@ -36,7 +38,9 @@ const Answer: React.FC = () => {
   const answerScope = () => (
     <CSSTransition in={!letterView} classNames='alert' timeout={600} appear>
       <div id='answer' className={'c-answer-scope'}>
-        <button onClick={() => setLetterView(false)}>close</button>
+        <div className='c-answer-scope__close'>
+          <img onClick={() => setLetterView(false)} src={closeIcon} />
+        </div>
         <h1>{question.title}</h1>
         <Letter />
       </div>

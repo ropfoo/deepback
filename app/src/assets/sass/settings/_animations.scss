@@ -6,7 +6,7 @@
 
 .alert-enter {
   opacity: 0;
-  margin-top: 300rem;
+  //margin-top: 300rem;
 }
 .alert-enter-active {
   opacity: 1;
@@ -15,10 +15,10 @@
 }
 .alert-exit {
   opacity: 0;
-  margin-top: 30rem;
+  margin-top: 200px;
 }
 .alert-exit-active {
   opacity: 1;
-  margin-top: 0rem;
+  margin-top: 0;
   transition: all 600ms;
 }

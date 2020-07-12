@@ -3,6 +3,14 @@
 
   h1 {
     text-align: center;
-    padding: 3rem 4rem;
+    padding: 0.5rem 4rem;
+    font-size: 1.5rem;
+  }
+
+  &__close {
+    padding: 2rem 0 0 4rem;
+    img {
+      width: 2rem;
+    }
   }
 }

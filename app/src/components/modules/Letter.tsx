@@ -81,7 +81,8 @@ const Letter: React.FC = () => {
   return (
     <div>
       {answered ? showResult() : showLetter()}
-      <button
+      <div
+        className='c-btn__submit'
         onClick={() => {
           if (letterValidation(letter.title, letter.body)) {
             // postLetter();
@@ -89,7 +90,7 @@ const Letter: React.FC = () => {
           }
         }}>
         send
-      </button>
+      </div>
     </div>
   );
 };
