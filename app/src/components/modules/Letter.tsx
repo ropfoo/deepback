@@ -3,6 +3,8 @@ import axios from 'axios';
 import { letterValidation } from '../../assets/typescript/validation';
 
 import smiley from '../../assets/icons/smiley_default.svg';
+import happy from '../../assets/icons/smiley_happy.svg';
+
 import { useLocation } from 'react-router-dom';
 
 const url = 'http://localhost:8000/api/letters';
@@ -22,6 +24,10 @@ const Letter: React.FC = () => {
     body: '',
   });
 
+  const [moodMenu, setMoodMenu] = useState(false);
+  const [mood, setMood] = useState('');
+  const moods = ['happy', 'sad', 'angry', 'default'];
+
   useEffect(() => {
     const path: string = location.pathname.split('/')[2];
     setLetter({
@@ -38,12 +44,26 @@ const Letter: React.FC = () => {
     });
   };
 
+  const changeMood = (newMood: string) => {
+    setMood(newMood);
+    setMoodMenu(false);
+  };
+
   const showLetter = () => {
     return (
-      <div className='c-letter'>
+      <div className={`c-letter ${mood}`}>
         <div className='c-letter__top'>
           <input className='c-letter__name' placeholder='Your Name' />
-          <img src={smiley} />
+          {moodMenu ? (
+            <div className='c-letter__moods'>
+              {moods.map((m) => {
+                return (
+                  <img key={m} src={happy} onClick={() => changeMood(m)} />
+                );
+              })}
+            </div>
+          ) : null}
+          <img onClick={() => setMoodMenu(!moodMenu)} src={smiley} />
         </div>
         <textarea
           className='c-letter__title'

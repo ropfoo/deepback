@@ -22,6 +22,7 @@ $padding: 0 4rem 0.3rem 4rem;
   img {
     transform: scale(0.6);
     transform-origin: top right;
+    cursor: pointer;
   }
 
   &__name {
@@ -41,4 +42,33 @@ $padding: 0 4rem 0.3rem 4rem;
     min-height: 30vh;
     padding: $padding;
   }
+
+  &__moods {
+    display: flex;
+    position: absolute;
+    right: 30%;
+    top: 30%;
+    img {
+      width: 5rem;
+    }
+  }
+}
+
+@mixin mood($color) {
+  border-color: $color;
+  transition: 0.3s;
+}
+
+.default {
+  @include mood($color-default);
+}
+
+.happy {
+  @include mood($color-positive);
+}
+.sad {
+  @include mood(blue);
+}
+.angry {
+  @include mood($color-negative);
 }

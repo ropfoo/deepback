@@ -2,14 +2,15 @@
   height: 70vh;
 
   h1 {
-    text-align: center;
-    padding: 0.5rem 4rem;
     font-size: 1.5rem;
+    padding: 0.5rem 4rem;
+    text-align: center;
   }
 
   &__close {
     padding: 2rem 0 0 4rem;
     img {
+      cursor: pointer;
       width: 2rem;
     }
   }
