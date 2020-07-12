@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { CSSTransition } from 'react-transition-group';
 import Letter from '../modules/Letter';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
@@ -6,6 +7,7 @@ import { useLocation } from 'react-router-dom';
 const Answer: React.FC = () => {
   const location = useLocation();
   const [question, setQuestion] = useState({ title: '', body: '' });
+  const [letterView, setLetterView] = useState(false);
 
   useEffect(() => {
     const url = `http://localhost:8000/api${location.pathname}`;
@@ -17,21 +19,33 @@ const Answer: React.FC = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  return (
-    <div>
+  const questionScope = () => (
+    <CSSTransition in={!letterView} classNames='alert' timeout={300}>
       <div className='c-question-scope'>
         <div>
           <h1>{question.title}</h1>
           <p>{question.body}</p>
         </div>
-        <a href='#answer' className='c-btn__toAnswer'>
-          answer
-        </a>
+        <div onClick={() => setLetterView(true)} className='c-btn__toAnswer'>
+          <p>answer</p>
+        </div>
       </div>
-      <div id='answer' className='c-answer-scope'>
+    </CSSTransition>
+  );
+
+  const answerScope = () => (
+    <CSSTransition in={!letterView} classNames='alert' timeout={600} appear>
+      <div id='answer' className={'c-answer-scope'}>
+        <button onClick={() => setLetterView(false)}>close</button>
         <h1>{question.title}</h1>
         <Letter />
       </div>
+    </CSSTransition>
+  );
+
+  return (
+    <div>
+      <div>{letterView ? answerScope() : questionScope()}</div>
     </div>
   );
 };

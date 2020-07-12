@@ -10,9 +10,18 @@
   padding: 0.5rem 2rem;
   transition: 0.3s;
 
+  p {
+    transition: 0.3s;
+  }
+
   &:hover {
     background-color: $hover-background-color;
     transition: 0.3s;
+
+    p {
+      transform: scale(1.2);
+      transition: 0.3s;
+    }
   }
 }
 
