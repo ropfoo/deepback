@@ -6,7 +6,6 @@
 
 .alert-enter {
   opacity: 0;
-  //margin-top: 300rem;
 }
 .alert-enter-active {
   opacity: 1;
@@ -20,5 +19,22 @@
 .alert-exit-active {
   opacity: 1;
   margin-top: 0;
+  transition: all 600ms;
+}
+
+// --- Fade ---
+
+.fade-enter {
+  opacity: 0;
+}
+.fade-enter-active {
+  opacity: 1;
+  transition: all 600ms;
+}
+.fade-exit {
+  opacity: 0;
+}
+.fade-exit-active {
+  opacity: 1;
   transition: all 600ms;
 }

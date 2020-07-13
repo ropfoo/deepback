@@ -11,7 +11,13 @@
     padding: 2rem 0 0 4rem;
     img {
       cursor: pointer;
-      width: 2rem;
+      width: 2.4rem;
+      transition: 0.3s;
+
+      &:hover {
+        transform: scale(1.1);
+        transition: 0.3s;
+      }
     }
   }
 }

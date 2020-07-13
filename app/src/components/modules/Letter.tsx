@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { letterValidation } from '../../assets/typescript/validation';
+import {
+  CSSTransition,
+  TransitionGroup,
+  Transition,
+} from 'react-transition-group';
 
 import { useLocation } from 'react-router-dom';
 
@@ -52,22 +57,28 @@ const Letter: React.FC = () => {
         <div className='c-letter__top'>
           <input className='c-letter__name' placeholder='Your Name' />
           {moodMenu ? (
-            <div className='c-letter__moods'>
-              {moods.map((m) => {
-                return (
+            <CSSTransition in={moodMenu} classNames='fade' timeout={600}>
+              <div className='c-letter__moods'>
+                {moods.map((m) => (
                   <img
                     key={m}
                     src={require(`../../assets/icons/smiley_${m}.svg`)}
                     onClick={() => changeMood(m)}
                   />
-                );
-              })}
-            </div>
-          ) : null}
-          <img
-            onClick={() => setMoodMenu(!moodMenu)}
-            src={require(`../../assets/icons/smiley_${mood}.svg`)}
-          />
+                ))}
+              </div>
+            </CSSTransition>
+          ) : (
+            <CSSTransition in={moodMenu} classNames='fade' timeout={600}>
+              <span></span>
+            </CSSTransition>
+          )}
+          <CSSTransition in={moodMenu} classNames='fade' timeout={600}>
+            <img
+              onClick={() => setMoodMenu(!moodMenu)}
+              src={require(`../../assets/icons/smiley_${mood}.svg`)}
+            />
+          </CSSTransition>
         </div>
         <textarea
           className='c-letter__title'
@@ -113,7 +124,7 @@ const Letter: React.FC = () => {
             setAnswered(true);
           }
         }}>
-        send
+        <p>send</p>
       </div>
     </div>
   );

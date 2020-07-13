@@ -57,6 +57,8 @@ $padding: 0 4rem 0.3rem 4rem;
   }
 }
 
+// --- Moods ---
+
 @mixin mood($color) {
   border-color: $color;
   transition: 0.3s;
@@ -69,9 +71,11 @@ $padding: 0 4rem 0.3rem 4rem;
 .happy {
   @include mood($color-positive);
 }
+
 .sad {
   @include mood($color-negative);
 }
+
 .neutral {
   @include mood($color-neutral);
 }

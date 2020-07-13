@@ -2,18 +2,20 @@
   <defs>
     <style>
       .cls-1 {
-        fill: #eaeaea;
+        fill: #696969;
       }
 
       .cls-2 {
         fill: #383838;
+        stroke: #696969;
+        stroke-linecap: round;
+        stroke-miterlimit: 10;
+        stroke-width: 90px;
       }
     </style>
   </defs>
   <title>close-button</title>
-  <circle class="cls-1" cx="500" cy="500" r="500"/>
-  <g>
-    <rect class="cls-2" x="451.38" y="86.66" width="97.24" height="826.67" rx="48.62" ry="48.62" transform="translate(500 -207.11) rotate(45)"/>
-    <rect class="cls-2" x="451.38" y="86.66" width="97.24" height="826.67" rx="48.62" ry="48.62" transform="translate(-207.11 500) rotate(-45)"/>
-  </g>
+  <path class="cls-1" d="M500,90A410.14,410.14,0,0,1,659.56,877.82,410.13,410.13,0,0,1,340.44,122.18,407.42,407.42,0,0,1,500,90m0-90C223.86,0,0,223.86,0,500s223.86,500,500,500,500-223.86,500-500S776.14,0,500,0Z"/>
+  <line class="cls-2" x1="357.22" y1="642.78" x2="642.78" y2="357.22"/>
+  <line class="cls-2" x1="642.78" y1="642.78" x2="357.22" y2="357.22"/>
 </svg>
