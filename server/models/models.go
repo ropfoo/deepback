@@ -22,10 +22,10 @@ type Question struct {
 
 // Answer Model
 type Answer struct {
-	ID       primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
-	UserName string             `json:"username" bson:"username"`
-	Title    string             `json:"title" bson:"title"`
-	Body     string             `json:"body" bson:"body"`
+	ID     primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
+	UserID string             `json:"userID" bson:"userID"`
+	Title  string             `json:"title" bson:"title"`
+	Body   string             `json:"body" bson:"body"`
 }
 
 // User Model
@@ -33,6 +33,11 @@ type User struct {
 	ID        primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
 	Name      string             `json:"name" bson:"name"`
 	Questions []*Question        `json:"questions" bson:"questions"`
+}
+
+// AnswerUser Model
+type AnswerUser struct {
+	UserID string `json:"userID" bson:"userID"`
 }
 
 func (user User) getQuestion(questionID primitive.ObjectID) *Question {

@@ -1,6 +1,9 @@
-export const letterValidation = (title: string, body: string) => {
-  console.log(title.length);
-  if (!title.length || !body.length) {
+export const letterValidation = (
+  title: string,
+  body: string,
+  userID: string
+) => {
+  if (!title.length || !body.length || !userID.length) {
     return false;
   }
   return true;

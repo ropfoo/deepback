@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import Letter from '../modules/Letter';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
-
+import { AuthContext } from '../hooks/AuthContext';
 import closeIcon from '../../assets/icons/close-button.svg';
 
 const Answer: React.FC = () => {
   const location = useLocation();
   const [question, setQuestion] = useState({ title: '', body: '' });
   const [letterView, setLetterView] = useState(false);
+  const Auth: any = useContext(AuthContext);
 
   useEffect(() => {
     const url = `http://localhost:8000/api${location.pathname}`;
     axios
-      .get(url)
+      .post(url, { userID: Auth.user.uid })
       .then((response) => {
         setQuestion(response.data);
       })

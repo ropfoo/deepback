@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { letterValidation } from '../../assets/typescript/validation';
+import { AuthContext } from '../hooks/AuthContext';
+
 import {
   CSSTransition,
   TransitionGroup,
@@ -13,15 +15,19 @@ const url = 'http://localhost:8000/api/letters';
 
 interface Letter {
   questionID: string;
+  userID: string;
   title: string;
   body: string;
 }
 
 const Letter: React.FC = () => {
   const location = useLocation();
+
+  const Auth: any = useContext(AuthContext);
   const [answered, setAnswered] = useState(false);
   const [letter, setLetter] = useState<Letter>({
     questionID: '',
+    userID: '',
     title: '',
     body: '',
   });
@@ -35,10 +41,13 @@ const Letter: React.FC = () => {
     setLetter({
       ...letter,
       questionID: path,
+      userID: Auth.user.uid,
     });
   }, []);
 
   const postLetter = () => {
+    console.log(letter);
+
     axios({
       method: 'post',
       url: url,
@@ -119,8 +128,8 @@ const Letter: React.FC = () => {
       <div
         className='c-btn__submit'
         onClick={() => {
-          if (letterValidation(letter.title, letter.body)) {
-            // postLetter();
+          if (letterValidation(letter.title, letter.body, letter.userID)) {
+            postLetter();
             setAnswered(true);
           }
         }}>
