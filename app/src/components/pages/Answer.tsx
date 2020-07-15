@@ -8,7 +8,11 @@ import closeIcon from '../../assets/icons/close-button.svg';
 
 const Answer: React.FC = () => {
   const location = useLocation();
+  const [loaded, setLoaded] = useState(false);
+  const [answered, setAnswered] = useState(false);
+
   const [question, setQuestion] = useState({ title: '', body: '' });
+  const [answer, setAnswer] = useState({ title: '', body: '' });
   const [letterView, setLetterView] = useState(false);
   const Auth: any = useContext(AuthContext);
 
@@ -19,8 +23,12 @@ const Answer: React.FC = () => {
       .then((response) => {
         if (response.data.message === 'already answered') {
           console.log('You already answered this!');
+          setAnswered(true);
+          setAnswer(response.data.answer);
+          setLoaded(true);
         } else {
           setQuestion(response.data);
+          setLoaded(true);
         }
       })
       .catch((err) => console.log(err));
@@ -56,9 +64,27 @@ const Answer: React.FC = () => {
     </CSSTransition>
   );
 
+  const answeredScope = () => (
+    <div>
+      <h1>Your answer was:</h1>
+      <h3>{answer.title}</h3>
+      <p>{answer.body}</p>
+    </div>
+  );
+
   return (
     <div>
-      <div>{letterView ? answerScope() : questionScope()}</div>
+      {loaded ? (
+        <div>
+          {answered ? (
+            answeredScope()
+          ) : (
+            <div>{letterView ? answerScope() : questionScope()}</div>
+          )}
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   );
 };

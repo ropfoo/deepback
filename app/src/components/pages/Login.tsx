@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../hooks/AuthContext';
 import * as firebase from 'firebase';
 
+import Question from '../modules/Question';
+
 import googleLogo from '../../assets/icons/login/google.png';
 
 const Login: React.FC = () => {
@@ -37,6 +39,7 @@ const Login: React.FC = () => {
         <div className='c-login'>
           <p>you are loggged in</p>
           <button>logout</button>
+          <Question />
         </div>
       ) : (
         <div className='c-login'>

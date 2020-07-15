@@ -67,29 +67,6 @@ func getLetters(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(users) // encode similar to serialize process.
 }
 
-func postLetter(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "POST")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-
-	var letter models.Letter
-
-	//var answer models.Answer
-
-	err := json.NewDecoder(r.Body).Decode(&letter)
-	if err != nil {
-		fmt.Println(err)
-	}
-	letters = append(letters, letter)
-
-	collection := helper.ConnectToDB()
-
-	result, err := collection.InsertOne(context.Background(), letter)
-
-	json.NewEncoder(w).Encode(result)
-}
-
 func getQuestion(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -115,7 +92,6 @@ func getQuestion(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// find question in user questions array
-
 	var question *models.Question
 
 	for _, q := range user.Questions {
@@ -179,6 +155,58 @@ func sendAnswer(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func postQuestion(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	var question models.Question
+
+	err := json.NewDecoder(r.Body).Decode(&question)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	collection := helper.ConnectToDB()
+
+	//userID, _ := primitive.ObjectIDFromHex(question.UserID)
+
+	filter := bson.M{"name": question.UserID}
+
+	var user models.User
+
+	e := collection.FindOne(context.TODO(), filter).Decode(&user)
+	if err != nil {
+		fmt.Println(e)
+	}
+
+	fmt.Printf("Found a single document: %+v\n", user.ID)
+
+	// if user exists -> post question to questions
+	// else -> create User and post question to questions
+
+	defaultID, _ := primitive.ObjectIDFromHex("000000000000000000000000")
+
+	if user.ID == defaultID {
+		fmt.Println("User doesn't exist!")
+		user.Name = question.UserID
+		insertResult, err := collection.InsertOne(context.TODO(), user)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println("created User: ", insertResult)
+
+		pushToArray := bson.M{"$push": bson.M{"questions": bson.M{"title": question.Title, "body": question.Body}}}
+		collection.UpdateOne(context.TODO(), filter, pushToArray)
+
+	} else {
+		pushToArray := bson.M{"$push": bson.M{"questions": bson.M{"title": question.Title, "body": question.Body}}}
+		collection.UpdateOne(context.TODO(), filter, pushToArray)
+	}
+
+}
+
 func main() {
 
 	router := mux.NewRouter()
@@ -186,7 +214,7 @@ func main() {
 	router.HandleFunc("/api/letters", getLetters).Methods("GET")
 	router.HandleFunc("/api/question/{id}", getQuestion).Methods("POST", "OPTIONS")
 	router.HandleFunc("/api/letters", sendAnswer).Methods("POST", "OPTIONS")
-	//router.HandleFunc("/api/letters", sendAnswer).Methods("PUT")
+	router.HandleFunc("/api/ask", postQuestion).Methods("POST", "OPTIONS")
 
 	log.Fatal(http.ListenAndServe(":8000", router))
 
