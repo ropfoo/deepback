@@ -1,4 +1,4 @@
-import React, { useState, createContext, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Answer from './components/pages/Answer';
 import Questions from './components/pages/Questions';
 import Login from './components/pages/Login';

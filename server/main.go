@@ -132,20 +132,25 @@ func getQuestion(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(e)
 	}
 
-	sendResponse := true
+	answered := false
 
+	// if already answered - save answer for response
+	var answerUserResponse models.AnswerUserResponse
 	for _, a := range question.Answers {
 		if answerUser.UserID == a.UserID {
-			fmt.Println("User:", answerUser.UserID)
 			fmt.Println("User in Answer:", a.UserID)
-			sendResponse = false
+			answerUserResponse.Answer = a
+			answerUserResponse.Message = "already answered"
+			answered = true
 			break
 		}
 	}
 
 	// return question
-	if sendResponse == true {
+	if answered == false {
 		json.NewEncoder(w).Encode(question)
+	} else {
+		json.NewEncoder(w).Encode(answerUserResponse)
 	}
 
 }

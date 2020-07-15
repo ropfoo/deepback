@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../hooks/AuthContext';
 import * as firebase from 'firebase';
@@ -42,7 +42,7 @@ const Login: React.FC = () => {
         <div className='c-login'>
           <h1>Login</h1>
           <div className='c-btn__login' onClick={() => loginWithGoogle()}>
-            <img src={googleLogo} />
+            <img src={googleLogo} alt='google' />
             <p>login with google</p>
           </div>
         </div>

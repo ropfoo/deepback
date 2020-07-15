@@ -40,6 +40,12 @@ type AnswerUser struct {
 	UserID string `json:"userID" bson:"userID"`
 }
 
+//AnswerUserResponse Model
+type AnswerUserResponse struct {
+	Message string  `json:"message" bson:"message,omitempty"`
+	Answer  *Answer `json:"answer" bson:"answer,omitempty"`
+}
+
 func (user User) getQuestion(questionID primitive.ObjectID) *Question {
 	var question *Question
 	for _, q := range user.Questions {

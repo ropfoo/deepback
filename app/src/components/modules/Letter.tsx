@@ -3,11 +3,7 @@ import axios from 'axios';
 import { letterValidation } from '../../assets/typescript/validation';
 import { AuthContext } from '../hooks/AuthContext';
 
-import {
-  CSSTransition,
-  TransitionGroup,
-  Transition,
-} from 'react-transition-group';
+import { CSSTransition } from 'react-transition-group';
 
 import { useLocation } from 'react-router-dom';
 
@@ -73,6 +69,7 @@ const Letter: React.FC = () => {
                     key={m}
                     src={require(`../../assets/icons/smiley_${m}.svg`)}
                     onClick={() => changeMood(m)}
+                    alt={`mood-${m}`}
                   />
                 ))}
               </div>
@@ -86,6 +83,7 @@ const Letter: React.FC = () => {
             <img
               onClick={() => setMoodMenu(!moodMenu)}
               src={require(`../../assets/icons/smiley_${mood}.svg`)}
+              alt='current-mood'
             />
           </CSSTransition>
         </div>

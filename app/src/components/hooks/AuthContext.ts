@@ -1,4 +1,4 @@
-import React, { useState, createContext, Component } from 'react';
+import { createContext } from 'react';
 
 export interface User {
   isLoggedIn: boolean;

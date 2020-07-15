@@ -17,7 +17,11 @@ const Answer: React.FC = () => {
     axios
       .post(url, { userID: Auth.user.uid })
       .then((response) => {
-        setQuestion(response.data);
+        if (response.data.message === 'already answered') {
+          console.log('You already answered this!');
+        } else {
+          setQuestion(response.data);
+        }
       })
       .catch((err) => console.log(err));
   }, []);
@@ -40,7 +44,11 @@ const Answer: React.FC = () => {
     <CSSTransition in={!letterView} classNames='alert' timeout={600} appear>
       <div id='answer' className={'c-answer-scope'}>
         <div className='c-answer-scope__close'>
-          <img onClick={() => setLetterView(false)} src={closeIcon} />
+          <img
+            onClick={() => setLetterView(false)}
+            src={closeIcon}
+            alt='close-icon'
+          />
         </div>
         <h1>{question.title}</h1>
         <Letter />
