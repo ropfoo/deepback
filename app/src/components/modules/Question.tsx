@@ -8,12 +8,13 @@ const Question: React.FC = () => {
 
   const [question, setQuestion] = useState({
     userID: Auth.user.uid,
-    name: Auth.user.name,
+    userName: Auth.user.name,
     title: 'test question title',
     body: 'test question body',
   });
 
   const sendQuestion = () => {
+    console.log(question);
     axios({
       method: 'post',
       url: url,
@@ -23,8 +24,24 @@ const Question: React.FC = () => {
 
   return (
     <div>
-      <textarea placeholder='Title' />
-      <textarea placeholder='My Question' />
+      <textarea
+        placeholder='Title'
+        onChange={(e) => {
+          setQuestion({
+            ...question,
+            title: e.target.value,
+          });
+        }}
+      />
+      <textarea
+        placeholder='My Question'
+        onChange={(e) => {
+          setQuestion({
+            ...question,
+            body: e.target.value,
+          });
+        }}
+      />
       <button onClick={sendQuestion}>send</button>
     </div>
   );

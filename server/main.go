@@ -188,7 +188,9 @@ func postQuestion(w http.ResponseWriter, r *http.Request) {
 
 	defaultID, _ := primitive.ObjectIDFromHex("000000000000000000000000")
 
-	if user.ID == defaultID {
+	if question.UserName == "" {
+		fmt.Println("emtpy user")
+	} else if user.ID == defaultID {
 		fmt.Println("User doesn't exist!")
 		user.Name = question.UserID
 		insertResult, err := collection.InsertOne(context.TODO(), user)

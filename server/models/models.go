@@ -13,12 +13,13 @@ type Letter struct {
 
 // Question Model
 type Question struct {
-	ID      primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
-	UserID  string             `json:"userID" bson:"userID,omitempty"`
-	Open    bool               `json:"open" bson:"open,omitempty"`
-	Title   string             `json:"title" bson:"title,omitempty"`
-	Body    string             `json:"body" bson:"body,omitempty"`
-	Answers []*Answer          `json:"answers" bson:"answers,omitempty"`
+	ID       primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
+	UserID   string             `json:"userID" bson:"userID,omitempty"`
+	UserName string             `json:"userName" bson:"userName,omitempty"`
+	Open     bool               `json:"open" bson:"open,omitempty"`
+	Title    string             `json:"title" bson:"title,omitempty"`
+	Body     string             `json:"body" bson:"body,omitempty"`
+	Answers  []*Answer          `json:"answers" bson:"answers,omitempty"`
 }
 
 // Answer Model
