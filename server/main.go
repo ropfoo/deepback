@@ -149,7 +149,7 @@ func sendAnswer(w http.ResponseWriter, r *http.Request) {
 	questionID, _ := primitive.ObjectIDFromHex(letter.QuestionID)
 
 	array := bson.M{"questions": bson.M{"$elemMatch": bson.M{"_id": questionID}}}
-	pushToArray := bson.M{"$push": bson.M{"questions.$.answers": bson.M{"title": letter.Title, "body": letter.Body, "userID": letter.UserID}}}
+	pushToArray := bson.M{"$push": bson.M{"questions.$.answers": bson.M{"title": letter.Title, "body": letter.Body, "userID": letter.UserID, "_id": primitive.NewObjectID()}}}
 
 	collection.UpdateOne(context.TODO(), array, pushToArray)
 
@@ -193,17 +193,18 @@ func postQuestion(w http.ResponseWriter, r *http.Request) {
 	} else if user.ID == defaultID {
 		fmt.Println("User doesn't exist!")
 		user.Name = question.UserID
+		user.DisplayName = question.UserName
 		insertResult, err := collection.InsertOne(context.TODO(), user)
 		if err != nil {
 			log.Fatal(err)
 		}
 		fmt.Println("created User: ", insertResult)
 
-		pushToArray := bson.M{"$push": bson.M{"questions": bson.M{"title": question.Title, "body": question.Body}}}
+		pushToArray := bson.M{"$push": bson.M{"questions": bson.M{"title": question.Title, "body": question.Body, "_id": primitive.NewObjectID()}}}
 		collection.UpdateOne(context.TODO(), filter, pushToArray)
 
 	} else {
-		pushToArray := bson.M{"$push": bson.M{"questions": bson.M{"title": question.Title, "body": question.Body}}}
+		pushToArray := bson.M{"$push": bson.M{"questions": bson.M{"title": question.Title, "body": question.Body, "_id": primitive.NewObjectID()}}}
 		collection.UpdateOne(context.TODO(), filter, pushToArray)
 	}
 

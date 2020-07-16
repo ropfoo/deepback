@@ -8,7 +8,7 @@ const Question: React.FC = () => {
 
   const [question, setQuestion] = useState({
     userID: Auth.user.uid,
-    userName: Auth.user.name,
+    displayName: Auth.user.name,
     title: 'test question title',
     body: 'test question body',
   });

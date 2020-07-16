@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 interface User {
   _id: string;
   name: string;
+  displayName: string;
   questions: [];
 }
 
@@ -39,7 +40,7 @@ const Questions: React.FC = () => {
                   to={`question/${question._id}`}>
                   <h2>{question.title}</h2>
                   <p>{question.body}</p>
-                  <i>{user.name}</i>
+                  <i>{user.displayName}</i>
                 </Link>
               );
             })}
