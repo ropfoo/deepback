@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../hooks/Context';
+import axios from 'axios';
 import * as firebase from 'firebase';
 
 import Question from '../modules/Question';
@@ -9,6 +10,7 @@ import googleLogo from '../../assets/icons/login/google.png';
 
 const Login: React.FC = () => {
   const Auth: any = useContext(AuthContext);
+  const [userQuestions, setUserQuestions] = useState([]);
 
   const history = useHistory();
 
@@ -33,6 +35,21 @@ const Login: React.FC = () => {
       });
   };
 
+  const getUserQuestions = () => {
+    const url = 'http://localhost:8000/api/user-questions';
+    axios
+      .post(url, {
+        name: Auth.user.uid,
+      })
+      .then((response) => {
+        console.log(response.data);
+        setUserQuestions(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   return (
     <div>
       {Auth.user.isLoggedIn ? (
@@ -40,6 +57,17 @@ const Login: React.FC = () => {
           <p>you are loggged in</p>
           <button>logout</button>
           <Question />
+          <button onClick={() => getUserQuestions()}>show my questions</button>
+          <div>
+            {userQuestions.map((q: any) => {
+              return (
+                <div key={q._id}>
+                  <h3>{q.title}</h3>
+                  <p>{q.body}</p>
+                </div>
+              );
+            })}
+          </div>
         </div>
       ) : (
         <div className='c-login'>

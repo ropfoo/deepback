@@ -210,6 +210,32 @@ func postQuestion(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func getUserQuestions(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	var user models.User
+
+	err := json.NewDecoder(r.Body).Decode(&user)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	collection := helper.ConnectToDB()
+
+	filter := bson.M{"name": user.Name}
+
+	e := collection.FindOne(context.TODO(), filter).Decode(&user)
+	if err != nil {
+		fmt.Println(e)
+	}
+
+	json.NewEncoder(w).Encode(user.Questions)
+
+}
+
 func main() {
 
 	router := mux.NewRouter()
@@ -218,6 +244,7 @@ func main() {
 	router.HandleFunc("/api/question/{id}", getQuestion).Methods("POST", "OPTIONS")
 	router.HandleFunc("/api/letters", sendAnswer).Methods("POST", "OPTIONS")
 	router.HandleFunc("/api/ask", postQuestion).Methods("POST", "OPTIONS")
+	router.HandleFunc("/api/user-questions", getUserQuestions).Methods("POST", "OPTIONS")
 
 	log.Fatal(http.ListenAndServe(":8000", router))
 
