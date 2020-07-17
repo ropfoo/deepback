@@ -149,7 +149,7 @@ func sendAnswer(w http.ResponseWriter, r *http.Request) {
 	questionID, _ := primitive.ObjectIDFromHex(letter.QuestionID)
 
 	array := bson.M{"questions": bson.M{"$elemMatch": bson.M{"_id": questionID}}}
-	pushToArray := bson.M{"$push": bson.M{"questions.$.answers": bson.M{"title": letter.Title, "body": letter.Body, "userID": letter.UserID, "_id": primitive.NewObjectID()}}}
+	pushToArray := bson.M{"$push": bson.M{"questions.$.answers": bson.M{"mood": letter.Mood, "title": letter.Title, "body": letter.Body, "userID": letter.UserID, "_id": primitive.NewObjectID()}}}
 
 	collection.UpdateOne(context.TODO(), array, pushToArray)
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { letterValidation } from '../../assets/typescript/validation';
 import { AuthContext } from '../hooks/AuthContext';
+import { QuestionContext } from '../hooks/Context';
 
 import { CSSTransition } from 'react-transition-group';
 
@@ -12,6 +13,7 @@ const url = 'http://localhost:8000/api/letters';
 interface Letter {
   questionID: string;
   userID: string;
+  mood: string;
   title: string;
   body: string;
 }
@@ -20,10 +22,12 @@ const Letter: React.FC = () => {
   const location = useLocation();
 
   const Auth: any = useContext(AuthContext);
-  const [answered, setAnswered] = useState(false);
+  const QuestionView: any = useContext(QuestionContext);
+
   const [letter, setLetter] = useState<Letter>({
     questionID: '',
-    userID: '',
+    userID: Auth.user.uid,
+    mood: 'default',
     title: '',
     body: '',
   });
@@ -37,7 +41,6 @@ const Letter: React.FC = () => {
     setLetter({
       ...letter,
       questionID: path,
-      userID: Auth.user.uid,
     });
   }, []);
 
@@ -54,87 +57,92 @@ const Letter: React.FC = () => {
   const changeMood = (newMood: string) => {
     setMood(newMood);
     setMoodMenu(false);
+    setLetter({
+      ...letter,
+      mood: newMood,
+    });
   };
 
   const showLetter = () => {
     return (
-      <div className={`c-letter ${mood}`}>
-        <div className='c-letter__top'>
-          <input className='c-letter__name' placeholder='Your Name' />
-          {moodMenu ? (
-            <CSSTransition in={moodMenu} classNames='fade' timeout={600}>
-              <div className='c-letter__moods'>
-                {moods.map((m) => (
-                  <img
-                    key={m}
-                    src={require(`../../assets/icons/smiley_${m}.svg`)}
-                    onClick={() => changeMood(m)}
-                    alt={`mood-${m}`}
-                  />
-                ))}
-              </div>
-            </CSSTransition>
-          ) : (
-            <CSSTransition in={moodMenu} classNames='fade' timeout={600}>
-              <span></span>
-            </CSSTransition>
-          )}
-          <CSSTransition in={moodMenu} classNames='fade' timeout={600}>
-            <img
-              onClick={() => setMoodMenu(!moodMenu)}
-              src={require(`../../assets/icons/smiley_${mood}.svg`)}
-              alt='current-mood'
-            />
-          </CSSTransition>
-        </div>
-        <textarea
-          className='c-letter__title'
-          placeholder='Title'
-          maxLength={50}
-          onChange={(e) =>
-            setLetter({
-              ...letter,
-              title: e.target.value,
-            })
-          }
-        />
-        <textarea
-          className='c-letter__body'
-          placeholder='Tell us what you think...'
-          onChange={(e) => {
-            setLetter({
-              ...letter,
-              body: e.target.value,
-            });
-          }}
-        />
-      </div>
-    );
-  };
-
-  const showResult = () => {
-    return (
       <div>
-        <h2>Thanks</h2>
+        <div className={`c-letter ${mood}`}>
+          <div className='c-letter__top'>
+            <input className='c-letter__name' placeholder='Your Name' />
+            {moodMenu ? (
+              <CSSTransition in={moodMenu} classNames='fade' timeout={600}>
+                <div className='c-letter__moods'>
+                  {moods.map((m) => (
+                    <img
+                      key={m}
+                      src={require(`../../assets/icons/smiley_${m}.svg`)}
+                      onClick={() => changeMood(m)}
+                      alt={`mood-${m}`}
+                    />
+                  ))}
+                </div>
+              </CSSTransition>
+            ) : (
+              <CSSTransition in={moodMenu} classNames='fade' timeout={600}>
+                <span></span>
+              </CSSTransition>
+            )}
+            <CSSTransition in={moodMenu} classNames='fade' timeout={600}>
+              <img
+                onClick={() => setMoodMenu(!moodMenu)}
+                src={require(`../../assets/icons/smiley_${mood}.svg`)}
+                alt='current-mood'
+              />
+            </CSSTransition>
+          </div>
+          <textarea
+            className='c-letter__title'
+            placeholder='Title'
+            maxLength={50}
+            onChange={(e) =>
+              setLetter({
+                ...letter,
+                title: e.target.value,
+              })
+            }
+          />
+          <textarea
+            className='c-letter__body'
+            placeholder='Tell us what you think...'
+            onChange={(e) => {
+              setLetter({
+                ...letter,
+                body: e.target.value,
+              });
+            }}
+          />
+        </div>
+        <div
+          className='c-btn__submit'
+          onClick={() => {
+            if (letterValidation(letter.title, letter.body, letter.userID)) {
+              postLetter();
+              QuestionView.setQuestionView({
+                ...QuestionView.questionView,
+                letterVisible: false,
+              });
+
+              console.log('You already answered this!');
+              QuestionView.setQuestionView({
+                ...QuestionView.questionView,
+                answered: true,
+                loaded: true,
+              });
+              //setAnswer(response.data.answer);
+            }
+          }}>
+          <p>send</p>
+        </div>
       </div>
     );
   };
 
-  return (
-    <div>
-      {answered ? showResult() : showLetter()}
-      <div
-        className='c-btn__submit'
-        onClick={() => {
-          if (letterValidation(letter.title, letter.body, letter.userID)) {
-            postLetter();
-            setAnswered(true);
-          }
-        }}>
-        <p>send</p>
-      </div>
-    </div>
-  );
+  return showLetter();
 };
 
 export default Letter;

@@ -10,6 +10,7 @@ import * as firebase from 'firebase';
 import firebaseConfig from './firebase.config';
 
 import { AuthContext } from './components/hooks/AuthContext';
+import { QuestionContext } from './components/hooks/Context';
 
 import logo from './assets/icons/logo.svg';
 
@@ -20,6 +21,12 @@ const App = () => {
     isLoggedIn: false,
     uid: '',
     name: '',
+  });
+
+  const [questionView, setQuestionView] = useState({
+    letterVisible: false,
+    answered: false,
+    loaded: false,
   });
 
   function readSession() {
@@ -61,12 +68,14 @@ const App = () => {
         </div>
         <Switch>
           <Route exact path='/login' component={Login} />
-          <Route path='/questions' component={Questions} />
-          <ProtectedRoute
-            exact
-            path='/question/:questionID'
-            component={Answer}
-          />
+          <QuestionContext.Provider value={{ questionView, setQuestionView }}>
+            <Route path='/questions' component={Questions} />
+            <ProtectedRoute
+              exact
+              path='/question/:questionID'
+              component={Answer}
+            />
+          </QuestionContext.Provider>
         </Switch>
       </div>
     </AuthContext.Provider>

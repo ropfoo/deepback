@@ -4,6 +4,7 @@ import Letter from '../modules/Letter';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { AuthContext } from '../hooks/AuthContext';
+import { QuestionContext } from '../hooks/Context';
 import closeIcon from '../../assets/icons/close-button.svg';
 
 const Answer: React.FC = () => {
@@ -13,8 +14,8 @@ const Answer: React.FC = () => {
 
   const [question, setQuestion] = useState({ title: '', body: '' });
   const [answer, setAnswer] = useState({ title: '', body: '' });
-  const [letterView, setLetterView] = useState(false);
   const Auth: any = useContext(AuthContext);
+  const QuestionView: any = useContext(QuestionContext);
 
   useEffect(() => {
     const url = `http://localhost:8000/api${location.pathname}`;
@@ -23,25 +24,41 @@ const Answer: React.FC = () => {
       .then((response) => {
         if (response.data.message === 'already answered') {
           console.log('You already answered this!');
-          setAnswered(true);
+          QuestionView.setQuestionView({
+            ...QuestionView.questionView,
+            answered: true,
+            loaded: true,
+          });
           setAnswer(response.data.answer);
-          setLoaded(true);
         } else {
           setQuestion(response.data);
-          setLoaded(true);
+          QuestionView.setQuestionView({
+            ...QuestionView.questionView,
+            loaded: true,
+          });
         }
       })
       .catch((err) => console.log(err));
   }, []);
 
   const questionScope = () => (
-    <CSSTransition in={!letterView} classNames='alert' timeout={300}>
+    <CSSTransition
+      in={!QuestionView.questionView.letterVisible}
+      classNames='alert'
+      timeout={300}>
       <div className='c-question-scope'>
         <div>
           <h1>{question.title}</h1>
           <p>{question.body}</p>
         </div>
-        <div onClick={() => setLetterView(true)} className='c-btn__submit'>
+        <div
+          onClick={() =>
+            QuestionView.setQuestionView({
+              ...QuestionView.questionView,
+              letterVisible: true,
+            })
+          }
+          className='c-btn__submit'>
           <p>answer</p>
         </div>
       </div>
@@ -49,14 +66,21 @@ const Answer: React.FC = () => {
   );
 
   const answerScope = () => (
-    <CSSTransition in={!letterView} classNames='alert' timeout={600} appear>
+    <CSSTransition
+      in={!QuestionView.questionView.letterVisible}
+      classNames='alert'
+      timeout={600}
+      appear>
       <div id='answer' className={'c-answer-scope'}>
-        <div className='c-answer-scope__close'>
-          <img
-            onClick={() => setLetterView(false)}
-            src={closeIcon}
-            alt='close-icon'
-          />
+        <div
+          onClick={() =>
+            QuestionView.setQuestionView({
+              ...QuestionView.questionView,
+              letterVisible: true,
+            })
+          }
+          className='c-answer-scope__close'>
+          <img src={closeIcon} alt='close-icon' />
         </div>
         <h1>{question.title}</h1>
         <Letter />
@@ -74,16 +98,20 @@ const Answer: React.FC = () => {
 
   return (
     <div>
-      {loaded ? (
+      {QuestionView.questionView.loaded ? (
         <div>
-          {answered ? (
+          {QuestionView.questionView.answered ? (
             answeredScope()
           ) : (
-            <div>{letterView ? answerScope() : questionScope()}</div>
+            <div>
+              {QuestionView.questionView.letterVisible
+                ? answerScope()
+                : questionScope()}
+            </div>
           )}
         </div>
       ) : (
-        ''
+        <div></div>
       )}
     </div>
   );

@@ -7,6 +7,7 @@ type Letter struct {
 	ID         primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
 	UserID     string             `json:"userID" bson:"userID"`
 	QuestionID string             `json:"questionID" bson:"questionID"`
+	Mood       string             `json:"mood" bson:"mood"`
 	Title      string             `json:"title" bson:"title"`
 	Body       string             `json:"body" bson:"body"`
 }
