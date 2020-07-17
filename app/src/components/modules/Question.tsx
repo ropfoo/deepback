@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
-import { AuthContext } from '../hooks/AuthContext';
+import { AuthContext } from '../hooks/Context';
 
 const Question: React.FC = () => {
   const url = 'http://localhost:8000/api/ask';

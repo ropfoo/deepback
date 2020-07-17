@@ -3,8 +3,7 @@ import { CSSTransition } from 'react-transition-group';
 import Letter from '../modules/Letter';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
-import { AuthContext } from '../hooks/AuthContext';
-import { QuestionContext } from '../hooks/Context';
+import { QuestionContext, AuthContext } from '../hooks/Context';
 import closeIcon from '../../assets/icons/close-button.svg';
 
 const Answer: React.FC = () => {

@@ -9,8 +9,7 @@ import './assets/sass/main.scss';
 import * as firebase from 'firebase';
 import firebaseConfig from './firebase.config';
 
-import { AuthContext } from './components/hooks/AuthContext';
-import { QuestionContext } from './components/hooks/Context';
+import { AuthContext, QuestionContext } from './components/hooks/Context';
 
 import logo from './assets/icons/logo.svg';
 

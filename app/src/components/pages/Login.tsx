@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { AuthContext } from '../hooks/AuthContext';
+import { AuthContext } from '../hooks/Context';
 import * as firebase from 'firebase';
 
 import Question from '../modules/Question';

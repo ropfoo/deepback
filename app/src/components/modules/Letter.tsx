@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { letterValidation } from '../../assets/typescript/validation';
-import { AuthContext } from '../hooks/AuthContext';
-import { QuestionContext } from '../hooks/Context';
+import { QuestionContext, AuthContext } from '../hooks/Context';
 
 import { CSSTransition } from 'react-transition-group';
 

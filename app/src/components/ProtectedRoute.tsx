@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { AuthContext } from './hooks/AuthContext';
+import { AuthContext } from './hooks/Context';
 
 interface Props {
   exact?: boolean;
