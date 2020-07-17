@@ -11,7 +11,7 @@ interface Props {
 const ProtectedRoute: React.FC<Props> = ({ component: Component, ...rest }) => {
   const Auth: any = useContext(AuthContext);
 
-  console.log(Auth.user);
+  //console.log(Auth.user);
   return (
     <Route
       {...rest}

@@ -9,11 +9,8 @@ import closeIcon from '../../assets/icons/close-button.svg';
 
 const Answer: React.FC = () => {
   const location = useLocation();
-  const [loaded, setLoaded] = useState(false);
-  const [answered, setAnswered] = useState(false);
 
   const [question, setQuestion] = useState({ title: '', body: '' });
-  const [answer, setAnswer] = useState({ title: '', body: '' });
   const Auth: any = useContext(AuthContext);
   const QuestionView: any = useContext(QuestionContext);
 
@@ -28,8 +25,8 @@ const Answer: React.FC = () => {
             ...QuestionView.questionView,
             answered: true,
             loaded: true,
+            answer: response.data.answer,
           });
-          setAnswer(response.data.answer);
         } else {
           setQuestion(response.data);
           QuestionView.setQuestionView({
@@ -76,7 +73,7 @@ const Answer: React.FC = () => {
           onClick={() =>
             QuestionView.setQuestionView({
               ...QuestionView.questionView,
-              letterVisible: true,
+              letterVisible: false,
             })
           }
           className='c-answer-scope__close'>
@@ -91,8 +88,8 @@ const Answer: React.FC = () => {
   const answeredScope = () => (
     <div>
       <h1>Your answer was:</h1>
-      <h3>{answer.title}</h3>
-      <p>{answer.body}</p>
+      <h3>{QuestionView.questionView.answer.title}</h3>
+      <p>{QuestionView.questionView.answer.body}</p>
     </div>
   );
 

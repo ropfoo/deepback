@@ -127,13 +127,12 @@ const Letter: React.FC = () => {
                 letterVisible: false,
               });
 
-              console.log('You already answered this!');
               QuestionView.setQuestionView({
                 ...QuestionView.questionView,
                 answered: true,
                 loaded: true,
+                answer: { title: letter.title, body: letter.body },
               });
-              //setAnswer(response.data.answer);
             }
           }}>
           <p>send</p>

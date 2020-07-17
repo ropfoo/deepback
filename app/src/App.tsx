@@ -27,6 +27,7 @@ const App = () => {
     letterVisible: false,
     answered: false,
     loaded: false,
+    answer: null,
   });
 
   function readSession() {
