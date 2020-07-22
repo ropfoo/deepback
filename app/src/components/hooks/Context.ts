@@ -6,5 +6,12 @@ export interface User {
   name: string;
 }
 
+export interface QuestionView {
+  letterVisible: boolean;
+  answered: boolean;
+  loaded: boolean;
+  answer: string;
+}
+
 export const AuthContext = createContext({});
 export const QuestionContext = createContext({});

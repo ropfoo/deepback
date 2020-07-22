@@ -9,24 +9,29 @@ import './assets/sass/main.scss';
 import * as firebase from 'firebase';
 import firebaseConfig from './firebase.config';
 
-import { AuthContext, QuestionContext } from './components/hooks/Context';
+import {
+  AuthContext,
+  QuestionContext,
+  User,
+  QuestionView,
+} from './components/hooks/Context';
 
 import logo from './assets/icons/logo.svg';
 
 firebase.initializeApp(firebaseConfig);
 
 const App = () => {
-  const [user, setUser] = useState({
+  const [user, setUser] = useState<User>({
     isLoggedIn: false,
     uid: '',
     name: '',
   });
 
-  const [questionView, setQuestionView] = useState({
+  const [questionView, setQuestionView] = useState<QuestionView>({
     letterVisible: false,
     answered: false,
     loaded: false,
-    answer: null,
+    answer: '',
   });
 
   function readSession() {
