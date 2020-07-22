@@ -73,34 +73,6 @@ func getQuestion(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-	var user models.User
-
-	// get id from url
-	var params = mux.Vars(r)
-	//fmt.Println(params["id"])
-
-	id, _ := primitive.ObjectIDFromHex(params["id"])
-
-	collection := helper.ConnectToDB()
-
-	// find user with question by id in db
-	filter := bson.M{"questions": bson.M{"$elemMatch": bson.M{"_id": id}}}
-
-	err := collection.FindOne(context.TODO(), filter).Decode(&user)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	// find question in user questions array
-	var question *models.Question
-
-	for _, q := range user.Questions {
-		if id == q.ID {
-			question = q
-		}
-	}
-
-	// check if user already send answer
 	var answerUser models.AnswerUser
 
 	e := json.NewDecoder(r.Body).Decode(&answerUser)
@@ -108,25 +80,63 @@ func getQuestion(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(e)
 	}
 
-	answered := false
+	// create default user
+	var user models.User
 
-	// if already answered - save answer for response
-	var answerUserResponse models.AnswerUserResponse
-	for _, a := range question.Answers {
-		if answerUser.UserID == a.UserID {
-			fmt.Println("User in Answer:", a.UserID)
-			answerUserResponse.Answer = a
-			answerUserResponse.Message = "already answered"
-			answered = true
-			break
-		}
+	// get id from url
+	var params = mux.Vars(r)
+
+	// save ID as 'MongoID'
+	id, _ := primitive.ObjectIDFromHex(params["id"])
+
+	// connect to MongoDB
+	collection := helper.ConnectToDB()
+
+	// create filtertype: find question by ID in db
+	filter := bson.M{"questions": bson.M{"$elemMatch": bson.M{"_id": id}}}
+
+	// save user with question in default user
+	err := collection.FindOne(context.TODO(), filter).Decode(&user)
+	if err != nil {
+		fmt.Println(err)
 	}
 
-	// return question
-	if answered == false {
-		json.NewEncoder(w).Encode(question)
+	// check if its the users own question
+	if user.Name == answerUser.UserID {
+		fmt.Println("thats my own question")
+		json.NewEncoder(w).Encode(user)
 	} else {
-		json.NewEncoder(w).Encode(answerUserResponse)
+		// create default question
+		var question *models.Question
+
+		// find question in user questions array
+		for _, q := range user.Questions {
+			if id == q.ID {
+				question = q
+			}
+		}
+
+		// check if user already send answer
+		answered := false
+
+		// if already answered - save answer for response
+		var answerUserResponse models.AnswerUserResponse
+		for _, a := range question.Answers {
+			if answerUser.UserID == a.UserID {
+				fmt.Println("User in Answer:", a.UserID)
+				answerUserResponse.Answer = a
+				answerUserResponse.Message = "already answered"
+				answered = true
+				break
+			}
+		}
+
+		// return question
+		if answered == false {
+			json.NewEncoder(w).Encode(question)
+		} else {
+			json.NewEncoder(w).Encode(answerUserResponse)
+		}
 	}
 
 }

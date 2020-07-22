@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { AuthContext } from '../hooks/Context';
 import axios from 'axios';
 import * as firebase from 'firebase';
 
-import Question from '../modules/Question';
+import QuestionView from '../modules/QuestionView';
 
 import googleLogo from '../../assets/icons/login/google.png';
 
@@ -56,15 +56,18 @@ const Login: React.FC = () => {
         <div className='c-login'>
           <p>you are loggged in</p>
           <button>logout</button>
-          <Question />
+          <QuestionView />
           <button onClick={() => getUserQuestions()}>show my questions</button>
           <div>
             {userQuestions.map((q: any) => {
               return (
-                <div key={q._id}>
+                <Link
+                  className='c-question-prev'
+                  key={q._id}
+                  to={`question/${q._id}`}>
                   <h3>{q.title}</h3>
                   <p>{q.body}</p>
-                </div>
+                </Link>
               );
             })}
           </div>
