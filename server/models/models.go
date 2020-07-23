@@ -1,8 +1,6 @@
 package models
 
 import (
-	"fmt"
-
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -64,11 +62,9 @@ type Stats struct {
 	Default  int       `json:"default" bson:"default,omitempty"`
 }
 
+//CalcMoods Function
 func (stats *Stats) CalcMoods() {
-	fmt.Println(stats.Question)
 	for _, answer := range stats.Question.Answers {
-		fmt.Println(answer.Mood)
-
 		switch answer.Mood {
 		case "happy":
 			stats.Happy++
