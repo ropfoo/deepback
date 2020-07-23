@@ -80,7 +80,7 @@ func getQuestion(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(e)
 	}
 
-	// create default user
+	// init default user
 	var user models.User
 
 	// get id from url
@@ -101,20 +101,24 @@ func getQuestion(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 
+	// init default question
+	var question *models.Question
+
+	// find question in user questions array
+	for _, q := range user.Questions {
+		if id == q.ID {
+			question = q
+		}
+	}
+
 	// check if its the users own question
 	if user.Name == answerUser.UserID {
 		fmt.Println("thats my own question")
-		json.NewEncoder(w).Encode(user)
+		var stats models.Stats
+		stats.Question = question
+		stats.CalcMoods()
+		json.NewEncoder(w).Encode(stats)
 	} else {
-		// create default question
-		var question *models.Question
-
-		// find question in user questions array
-		for _, q := range user.Questions {
-			if id == q.ID {
-				question = q
-			}
-		}
 
 		// check if user already send answer
 		answered := false
