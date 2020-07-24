@@ -137,7 +137,11 @@ func getQuestion(w http.ResponseWriter, r *http.Request) {
 
 		// return question
 		if answered == false {
-			json.NewEncoder(w).Encode(question)
+			var questionResponse models.QuestionResponse
+			questionResponse.ID = question.ID
+			questionResponse.Title = question.Title
+			questionResponse.Body = question.Body
+			json.NewEncoder(w).Encode(questionResponse)
 		} else {
 			json.NewEncoder(w).Encode(answerUserResponse)
 		}

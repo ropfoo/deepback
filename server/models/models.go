@@ -42,6 +42,10 @@ type User struct {
 	Questions   []*Question        `json:"questions" bson:"questions,omitempty"`
 }
 
+//-------------------------
+// --- Specia Responses ---
+//-------------------------
+
 // AnswerUser Model
 type AnswerUser struct {
 	UserID string `json:"userID" bson:"userID"`
@@ -53,6 +57,13 @@ type AnswerUserResponse struct {
 	Answer  *Answer `json:"answer" bson:"answer,omitempty"`
 }
 
+// QuestionResponse Model
+type QuestionResponse struct {
+	ID    primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
+	Title string             `json:"title" bson:"title,omitempty"`
+	Body  string             `json:"body" bson:"body,omitempty"`
+}
+
 // Stats Model
 type Stats struct {
 	Question *Question `json:"question" bson:"question,omitempty"`
@@ -61,6 +72,10 @@ type Stats struct {
 	Sad      int       `json:"sad" bson:"sad,omitempty"`
 	Default  int       `json:"default" bson:"default,omitempty"`
 }
+
+//-------------------------
+// --- Functions ---
+//-------------------------
 
 //CalcMoods Function
 func (stats *Stats) CalcMoods() {
