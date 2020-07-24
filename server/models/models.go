@@ -64,6 +64,14 @@ type QuestionResponse struct {
 	Body  string             `json:"body" bson:"body,omitempty"`
 }
 
+// AllQuestionsResponse Model
+type AllQuestionsResponse struct {
+	ID          primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
+	DisplayName string             `json:"displayName" bson:"displayName"`
+	Title       string             `json:"title" bson:"title"`
+	Body        string             `json:"body" bson:"body"`
+}
+
 // Stats Model
 type Stats struct {
 	Question *Question `json:"question" bson:"question,omitempty"`

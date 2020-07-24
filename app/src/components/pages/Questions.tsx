@@ -17,7 +17,7 @@ interface Response {
 const url = 'http://localhost:8000/api/letters';
 
 const Questions: React.FC = () => {
-  const [users, setUsers] = useState([]);
+  const [questions, setQuestions] = useState([]);
   const QuestionView: any = useContext(QuestionContext);
 
   useEffect(() => {
@@ -30,29 +30,22 @@ const Questions: React.FC = () => {
     axios
       .get(url)
       .then((response: Response) => {
-        setUsers(response.data);
+        setQuestions(response.data);
       })
       .catch((err) => console.log(err));
   }, []);
-
   return (
     <div>
-      {users.map((user: User) => {
+      {questions.map((question: any) => {
         return (
-          <div key={user._id}>
-            {user.questions.map((question: any) => {
-              return (
-                <Link
-                  className='c-question-prev'
-                  key={question._id}
-                  to={`question/${question._id}`}>
-                  <h2>{question.title}</h2>
-                  <p>{question.body}</p>
-                  <i>{user.displayName}</i>
-                </Link>
-              );
-            })}
-          </div>
+          <Link
+            className='c-question-prev'
+            key={question._id}
+            to={`question/${question._id}`}>
+            <h2>{question.title}</h2>
+            <p>{question.body}</p>
+            <i>{question.displayName}</i>
+          </Link>
         );
       })}
     </div>

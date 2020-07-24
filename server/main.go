@@ -16,6 +16,8 @@ import (
 
 var letters []models.Letter
 
+var allQuestionsResponses []models.AllQuestionsResponse
+
 var users []models.User
 
 func getUser(userID string) models.User {
@@ -64,7 +66,22 @@ func getLetters(w http.ResponseWriter, r *http.Request) {
 	if err := cur.Err(); err != nil {
 		log.Fatal(err)
 	}
-	json.NewEncoder(w).Encode(users) // encode similar to serialize process.
+
+	allQuestionsResponses = nil
+	//create array of all questions
+	for _, user := range users {
+		for _, question := range user.Questions {
+			var allQuestionsResponse = models.AllQuestionsResponse{
+				DisplayName: user.DisplayName,
+				Title:       question.Title,
+				Body:        question.Body,
+				ID:          question.ID,
+			}
+			allQuestionsResponses = append(allQuestionsResponses, allQuestionsResponse)
+		}
+	}
+
+	json.NewEncoder(w).Encode(allQuestionsResponses) // encode similar to serialize process.
 }
 
 func getQuestion(w http.ResponseWriter, r *http.Request) {
@@ -137,10 +154,11 @@ func getQuestion(w http.ResponseWriter, r *http.Request) {
 
 		// return question
 		if answered == false {
-			var questionResponse models.QuestionResponse
-			questionResponse.ID = question.ID
-			questionResponse.Title = question.Title
-			questionResponse.Body = question.Body
+			var questionResponse = models.QuestionResponse{
+				ID:    question.ID,
+				Title: question.Title,
+				Body:  question.Body,
+			}
 			json.NewEncoder(w).Encode(questionResponse)
 		} else {
 			json.NewEncoder(w).Encode(answerUserResponse)
