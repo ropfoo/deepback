@@ -128,7 +128,7 @@ const Letter: React.FC = () => {
 
               QuestionView.setQuestionView({
                 ...QuestionView.questionView,
-                answered: true,
+                view: 'answered',
                 loaded: true,
                 answer: { title: letter.title, body: letter.body },
               });

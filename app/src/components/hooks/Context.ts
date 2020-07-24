@@ -8,9 +8,10 @@ export interface User {
 
 export interface QuestionView {
   letterVisible: boolean;
-  answered: boolean;
+  view: string;
   loaded: boolean;
-  answer: string;
+  answer: object;
+  stats: object;
 }
 
 export const AuthContext = createContext({});

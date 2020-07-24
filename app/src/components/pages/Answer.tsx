@@ -22,9 +22,17 @@ const Answer: React.FC = () => {
           console.log('You already answered this!');
           QuestionView.setQuestionView({
             ...QuestionView.questionView,
-            answered: true,
+            view: 'answered',
             loaded: true,
             answer: response.data.answer,
+          });
+        } else if (response.data.happy != undefined) {
+          console.log('own question');
+          QuestionView.setQuestionView({
+            ...QuestionView.questionView,
+            view: 'stats',
+            stats: response.data,
+            loaded: true,
           });
         } else {
           setQuestion(response.data);
@@ -92,20 +100,47 @@ const Answer: React.FC = () => {
     </div>
   );
 
+  const checkView = () => {
+    if (QuestionView.questionView.view === 'answered') {
+      return answeredScope();
+    } else if (QuestionView.questionView.view === 'stats') {
+      return (
+        <div>
+          <h3>{QuestionView.questionView.stats.question.title}</h3>
+          <p>{QuestionView.questionView.stats.question.body}</p>
+          <p>happy: {QuestionView.questionView.stats.happy}</p>
+          <p>neutral: {QuestionView.questionView.stats.neutral}</p>
+          <p>sad: {QuestionView.questionView.stats.sad}</p>
+          <p>default: {QuestionView.questionView.stats.default}</p>
+
+          {QuestionView.questionView.stats.question.answers ? (
+            QuestionView.questionView.stats.question.answers.map(
+              (answer: any) => {
+                return (
+                  <div key={answer._id}>
+                    <h4>{answer.title}</h4>
+                    <p>{answer.body}</p>
+                    <p>{answer.mood}</p>
+                  </div>
+                );
+              }
+            )
+          ) : (
+            <div>no answers</div>
+          )}
+        </div>
+      );
+    } else {
+      return QuestionView.questionView.letterVisible
+        ? answerScope()
+        : questionScope();
+    }
+  };
+
   return (
     <div>
       {QuestionView.questionView.loaded ? (
-        <div>
-          {QuestionView.questionView.answered ? (
-            answeredScope()
-          ) : (
-            <div>
-              {QuestionView.questionView.letterVisible
-                ? answerScope()
-                : questionScope()}
-            </div>
-          )}
-        </div>
+        <div>{checkView()}</div>
       ) : (
         <div></div>
       )}

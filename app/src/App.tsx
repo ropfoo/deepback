@@ -29,9 +29,10 @@ const App = () => {
 
   const [questionView, setQuestionView] = useState<QuestionView>({
     letterVisible: false,
-    answered: false,
+    view: '',
     loaded: false,
-    answer: '',
+    answer: {},
+    stats: {},
   });
 
   function readSession() {
