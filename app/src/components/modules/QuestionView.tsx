@@ -3,7 +3,7 @@ import axios from 'axios';
 import { AuthContext } from '../hooks/Context';
 
 const Question: React.FC = () => {
-  const url = 'http://localhost:8000/api/ask';
+  const url = `${process.env.REACT_APP_API_URL}/ask`;
   const Auth: any = useContext(AuthContext);
 
   const [question, setQuestion] = useState({

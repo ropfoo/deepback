@@ -43,7 +43,7 @@ type User struct {
 }
 
 //-------------------------
-// --- Specia Responses ---
+// --- Special Responses ---
 //-------------------------
 
 // AnswerUser Model

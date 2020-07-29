@@ -3,18 +3,18 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { QuestionContext } from '../hooks/Context';
 
-interface User {
+interface Question {
   _id: string;
-  name: string;
+  title: string;
+  body: string;
   displayName: string;
-  questions: [];
 }
 
 interface Response {
   data: [];
 }
 
-const url = 'http://localhost:8000/api/letters';
+const url = `${process.env.REACT_APP_API_URL}/letters`;
 
 const Questions: React.FC = () => {
   const [questions, setQuestions] = useState([]);
@@ -36,7 +36,7 @@ const Questions: React.FC = () => {
   }, []);
   return (
     <div>
-      {questions.map((question: any) => {
+      {questions.map((question: Question) => {
         return (
           <Link
             className='c-question-prev'

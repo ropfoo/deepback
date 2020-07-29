@@ -7,8 +7,6 @@ import { CSSTransition } from 'react-transition-group';
 
 import { useLocation } from 'react-router-dom';
 
-const url = 'http://localhost:8000/api/letters';
-
 interface Letter {
   questionID: string;
   userID: string;
@@ -45,6 +43,7 @@ const Letter: React.FC = () => {
 
   const postLetter = () => {
     console.log(letter);
+    const url = `${process.env.REACT_APP_API_URL}/letters`;
 
     axios({
       method: 'post',

@@ -36,7 +36,7 @@ const Login: React.FC = () => {
   };
 
   const getUserQuestions = () => {
-    const url = 'http://localhost:8000/api/user-questions';
+    const url = `${process.env.REACT_APP_API_URL}/user-questions`;
     axios
       .post(url, {
         name: Auth.user.uid,
