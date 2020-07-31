@@ -50,6 +50,21 @@ const Login: React.FC = () => {
       });
   };
 
+  const getUserAnswers = () => {
+    const url = `${process.env.REACT_APP_API_URL}/user-answers`;
+    axios
+      .post(url, {
+        name: Auth.user.uid,
+      })
+      .then((response) => {
+        console.log(response.data);
+        setUserQuestions(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   return (
     <div>
       {Auth.user.isLoggedIn ? (
@@ -58,6 +73,20 @@ const Login: React.FC = () => {
           <button>logout</button>
           <QuestionView />
           <button onClick={() => getUserQuestions()}>show my questions</button>
+          <div>
+            {userQuestions.map((q: any) => {
+              return (
+                <Link
+                  className='c-question-prev'
+                  key={q._id}
+                  to={`question/${q._id}`}>
+                  <h3>{q.title}</h3>
+                  <p>{q.body}</p>
+                </Link>
+              );
+            })}
+          </div>
+          <button onClick={() => getUserAnswers()}>show my answers</button>
           <div>
             {userQuestions.map((q: any) => {
               return (

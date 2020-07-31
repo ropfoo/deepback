@@ -185,7 +185,14 @@ func sendAnswer(w http.ResponseWriter, r *http.Request) {
 	questionID, _ := primitive.ObjectIDFromHex(letter.QuestionID)
 
 	array := bson.M{"questions": bson.M{"$elemMatch": bson.M{"_id": questionID}}}
-	pushToArray := bson.M{"$push": bson.M{"questions.$.answers": bson.M{"mood": letter.Mood, "title": letter.Title, "body": letter.Body, "userID": letter.UserID, "_id": primitive.NewObjectID()}}}
+	pushToArray := bson.M{
+		"$push": bson.M{
+			"questions.$.answers": bson.M{
+				"mood":   letter.Mood,
+				"title":  letter.Title,
+				"body":   letter.Body,
+				"userID": letter.UserID,
+				"_id":    primitive.NewObjectID()}}}
 
 	collection.UpdateOne(context.TODO(), array, pushToArray)
 
@@ -272,6 +279,77 @@ func getUserQuestions(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func getUserAnswers(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	var user models.User
+
+	err := json.NewDecoder(r.Body).Decode(&user)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	collection := helper.ConnectToDB()
+
+	//filter := bson.M{"name": user.Name}
+
+	fmt.Println(user.Name)
+	filter := bson.M{"questions": bson.M{"$elemMatch": bson.M{"answers": bson.M{"$elemMatch": bson.M{"userID": user.Name}}}}}
+
+	cur, err := collection.Find(context.Background(), filter)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	defer cur.Close(context.Background())
+
+	users = nil
+
+	for cur.Next(context.Background()) {
+
+		// create a value into which the single document can be decoded
+		var user models.User
+
+		// & character returns the memory address of the following variable.
+		err := cur.Decode(&user) // decode similar to deserialize process.
+		if err != nil {
+			log.Fatal(err)
+		}
+		//fmt.Println(cur.Current)
+		// add item our array
+		users = append(users, user)
+	}
+
+	if err := cur.Err(); err != nil {
+		log.Fatal(err)
+	}
+	var answers []models.AnswerFromUser
+	var answ models.AnswerFromUser
+
+	for _, u := range users {
+		for _, question := range u.Questions {
+			for _, answer := range question.Answers {
+				if answer.UserID == user.Name {
+					answ.Author = u.Name
+					answ.Answer = answer
+					answ.QuestionID = question.ID
+					answ.Title = question.Title
+					answ.Body = question.Body
+					answers = append(answers, answ)
+				}
+			}
+		}
+	}
+
+	fmt.Println(answers)
+
+	json.NewEncoder(w).Encode(answers)
+
+}
+
 func main() {
 
 	router := mux.NewRouter()
@@ -281,6 +359,7 @@ func main() {
 	router.HandleFunc("/api/letters", sendAnswer).Methods("POST", "OPTIONS")
 	router.HandleFunc("/api/ask", postQuestion).Methods("POST", "OPTIONS")
 	router.HandleFunc("/api/user-questions", getUserQuestions).Methods("POST", "OPTIONS")
+	router.HandleFunc("/api/user-answers", getUserAnswers).Methods("POST", "OPTIONS")
 
 	log.Fatal(http.ListenAndServe(":8000", router))
 

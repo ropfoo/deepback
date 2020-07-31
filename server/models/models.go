@@ -72,6 +72,20 @@ type AllQuestionsResponse struct {
 	Body        string             `json:"body" bson:"body"`
 }
 
+// AllAnswersFromUser Model
+type AllAnswersFromUser struct {
+	Answers []*Answer `json:"answers" bson:"answers,omitempty"`
+}
+
+// AnswerFromUser Model
+type AnswerFromUser struct {
+	Author     string             `json:"author" bson:"author"`
+	QuestionID primitive.ObjectID `json:"id" bson:"id"`
+	Title      string             `json:"title" bson:"title"`
+	Body       string             `json:"body" bson:"body"`
+	Answer     *Answer            `json:"answer" bson:"answer,omitempty"`
+}
+
 // Stats Model
 type Stats struct {
 	Question *Question `json:"question" bson:"question,omitempty"`
